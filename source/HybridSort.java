@@ -2,7 +2,7 @@ package source;
 
 public class HybridSort {
 
-    public static void hybridSort(int[] arr, int start, int end)
+    public static void hybridSortInPlace(int[] arr, int start, int end)
     {
         //This is a trivial case (just 1 element, so no sorting required)
         if(start == end)
@@ -15,16 +15,44 @@ public class HybridSort {
         if(size <= Sort.S)
         {
             //We conduct insertion sort from start to end?
-            InsertionSort.insertionSortInRange(arr, start, end);
+            InsertionSort.insertionSortInRangeIP(arr, start, end);
 
         }
         else // > S, so we do merge
         {
             //We conduct merge sort
             int mid = (start + end) / 2;
-            hybridSort(arr, start, mid);
-            hybridSort(arr, mid + 1, end);
-            MergeSort.mergeAscending(arr, start, mid, end);
+            hybridSortInPlace(arr, start, mid);
+            hybridSortInPlace(arr, mid + 1, end);
+            MergeSort.mergeAscendingInPlace(arr, start, mid, end);
         }
+    }
+
+    public static int[] hybridSortAuxillary(int[] arr, int start, int end)
+    {
+        //This is a trivial case (just 1 element, so no sorting required)
+        if(start == end)
+        {
+            return arr;
+        }
+        //0 indexed size
+        int size = end - start + 1;
+        //Create a new array
+        int[] sortedArr = new int[size];
+        if(size <= Sort.S)
+        {
+            sortedArr = InsertionSort.insertionSortInRangeAux(arr, start, end);
+            return sortedArr;
+        }
+        //Else we can run typical merge sort
+        int mid = (start + end) / 2;
+        int lSize =mid - start + 1;
+        int rSize = end - mid;
+        int[] left = new int[lSize];
+        left = hybridSortAuxillary(arr,start, mid);
+        int[] right = new int[rSize];
+        right = hybridSortAuxillary(arr, mid+1, end);
+        sortedArr = MergeSort.mergeAscendingAuxillary(left,right,lSize,rSize);
+        return sortedArr;
     }
 }

@@ -10,6 +10,9 @@ public class Main {
     public static void main(String[] args) {
         //Make scanner first
         Scanner sc = new Scanner(System.in);
+        //Store time
+        long timeStart;
+        long timeDiff;
 
         //Print out the Ui first
         System.out.println("Enter the size of array:");
@@ -52,7 +55,7 @@ public class Main {
                 System.out.println("Populating elements randomly");
                 for(int i = 0; i < size; i++)
                 {
-                    arr[i] = random.nextInt(size);
+                    arr[i] = random.nextInt(size * 2);
                 }
                 break;
             }
@@ -75,11 +78,14 @@ public class Main {
         //Do some UI to test different sorting algorithms
         do {
             System.out.println("1. Reconfigure S, Current S:" + Sort.S);
-            System.out.println("2. Insertion Sort");
-            System.out.println("3. Merge Sort");
-            System.out.println("4. Hybrid Sort");
-            System.out.println("5. Print Array [not recommended as n -> inf]");
-            System.out.println("6. Quit");
+            System.out.println("2. In Place Insertion Sort");
+            System.out.println("3. Auxillary Insertion Sort");
+            System.out.println("4. In Place Merge Sort");
+            System.out.println("5. Auxillary Merge Sort");
+            System.out.println("6. In Place Hybrid Sort");
+            System.out.println("7. Auxillary Hybrid Sort");
+            System.out.println("8. Print Array [not recommended as n -> inf]");
+            System.out.println("9. Quit");
             choice = sc.nextInt();
 
             //Copy the array into a new variable
@@ -100,30 +106,67 @@ public class Main {
                     System.out.println("Input both range start end:");
                     int start = sc.nextInt();
                     int end = sc.nextInt();
-                    InsertionSort.insertionSortInRange(copyArr, start, end);
+                    copyArr = InsertionSort.insertionSortInRangeAux(copyArr, start, end);
                     Debug.printArray(copyArr);
                     break;
                 }
                 case 3:
                 {
-                    Sort.mergeSort(copyArr, 0, size -1, ASCENDING);
+                    //Sort.insertionSort(copyArr, ASCENDING);
+                    System.out.println("Input both range start end:");
+                    int start = sc.nextInt();
+                    int end = sc.nextInt();
+                    InsertionSort.insertionSortInRangeIP(copyArr, start, end);
                     Debug.printArray(copyArr);
                     break;
                 }
-                case 4:
+                case 4: //in place merge
                 {
-                    Sort.hybridSort(copyArr, 0, size - 1);
+                    timeStart = System.nanoTime();
+                    Sort.mergeSortInPlace(copyArr, 0, size -1, ASCENDING);
+                    timeDiff = System.nanoTime() - timeStart;
                     Debug.printArray(copyArr);
+                    System.out.println("Time taken: " + timeDiff * Math.pow(10, -6) + "ms" +"/" + timeDiff * Math.pow(10, -9) + "s");
                     break;
                 }
-                case 5:
+                case 5: //merge aux
+                {
+                    timeStart = System.nanoTime();
+                    copyArr = Sort.mergeSortAuxillary(copyArr,0, size- 1);
+                    timeDiff = System.nanoTime() - timeStart;
+                    //Debug.printArray(copyArr);
+                    System.out.println("Key Comparisons: " + Sort.keyComparisons);
+                    System.out.println("Time taken: " + timeDiff * Math.pow(10, -6) + "ms" +"/" + timeDiff * Math.pow(10, -9) + "s");
+                    break;
+                }
+                case 6: //in place hybrid
+                {
+                    timeStart = System.nanoTime();
+                    Sort.hybridSortInPlace(copyArr, 0, size - 1);
+                    timeDiff = System.nanoTime() - timeStart;
+                    //Debug.printArray(copyArr);
+                    System.out.println("Key Comparisons: " + Sort.keyComparisons);
+                    System.out.println("Time taken: " + timeDiff * Math.pow(10, -6) + "ms" +"/" + timeDiff * Math.pow(10, -9) + "s");
+                    break;
+                }
+                case 7: //aux hybrid
+                {
+                    timeStart = System.nanoTime();
+                    copyArr = Sort.hybridSortAuxillary(copyArr, 0, size - 1);
+                    timeDiff = System.nanoTime() - timeStart;
+                    //Debug.printArray(copyArr);
+                    System.out.println("Key Comparisons: " + Sort.keyComparisons);
+                    System.out.println("Time taken: " + timeDiff * Math.pow(10, -6) + "ms" +"/" + timeDiff * Math.pow(10, -9) + "s");
+                    break;
+                }
+                case 8:
                 {
                     Debug.printArray(arr);
                     break;
                 }
             }
 
-        } while(choice != 6);
+        } while(choice != 9);
 
 
         /*

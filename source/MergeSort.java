@@ -18,7 +18,7 @@ start  mid     end
 public class MergeSort {
 
     //Main merge sort function
-    public static void mergeSort(int[] arr, int start, int end, boolean ascending) {
+    public static void mergeSortInPlace(int[] arr, int start, int end, boolean ascending) {
         //Check if start < end
         //If start == end (single element (one index))
         //If start < end (at least 2 elements, considered a "large problem")
@@ -26,17 +26,90 @@ public class MergeSort {
             //Calculate mid
             int mid = (start + end) / 2;
             //Split the list into two halfs and call recursively
-            mergeSort(arr, start, mid, ascending);
-            mergeSort(arr, mid + 1, end, ascending);
+            mergeSortInPlace(arr, start, mid, ascending);
+            mergeSortInPlace(arr, mid + 1, end, ascending);
 
             if (ascending)
-                mergeAscending(arr, start, mid, end);
+                mergeAscendingInPlace(arr, start, mid, end);
             else
-                mergeDescending(arr, start, mid, end);
+                mergeDescendingInPlace(arr, start, mid, end);
         }
     }
 
-    public static void mergeAscending(int[] arr, int start, int mid, int end) {
+    public static int[] mergeSortAuxillary(int[] arr, int start, int end)
+    {
+        //Calculate size of array
+        int size = end - start + 1;
+
+        //Handle the trivial case
+        if(size <= 1)
+        {
+            //Return a new array with just start as it's element
+            return new int[]{arr[start]};
+        }
+        //Make a new array of this size
+        int[] sortedAuxArr = new int[size];
+
+        //Calculate mid
+        int mid = (start + end) /2;
+        //Calculate the subsequent sizes for both arrays
+        int leftSize = mid - start + 1;
+        int rightSize = end - mid; // (mid + 1 to end, end - (mid +1) + 1 = end - mid
+        //Create new subarrays
+        int[] left = new int[leftSize];
+        //Go into left
+        left = mergeSortAuxillary(arr,start,mid);
+        int[] right = new int[rightSize];
+        right = mergeSortAuxillary(arr, mid+1, end);
+        sortedAuxArr = mergeAscendingAuxillary(left, right, leftSize, rightSize);
+
+        return sortedAuxArr;
+    }
+
+    //Two way merge sort iterative
+    public static int[] mergeAscendingAuxillary(int[] left, int[] right, int lSize, int rSize)
+    {
+        //Create our new array from the sizes
+        int[] sortedArr = new int [lSize + rSize];
+        //Handle the trivial case
+        if(lSize == 0)
+            return right;
+        else if(rSize == 0)
+            return left;
+
+        //Create traversal pointers
+        int l = 0; //pointer to elements on left list
+        int r = 0; //pointer to elements on right list
+        int k = 0; //pointer to elements in sorted list
+
+        while(l < lSize && r < rSize)
+        {
+            Sort.keyComparisons++;
+            //Check if its smaller at each element
+            if(left[l] < right[r]) {
+                sortedArr[k++] = left[l++];
+            }
+            else if(left[l] > right[r]) {
+                sortedArr[k++] = right[r++];
+            }
+            else {
+                //Else they are equal. increment both pointers
+                sortedArr[k++] = left[l++];
+                sortedArr[k++] = right[r++];
+            }
+        }
+
+        //Then just fix up the rest
+        for(;l < lSize; l++)
+            sortedArr[k++] = left[l];
+        for(;r < rSize; r++)
+            sortedArr[k++] = right[r];
+
+        return sortedArr;
+
+    }
+
+    public static void mergeAscendingInPlace(int[] arr, int start, int mid, int end) {
         int i, temp;
         //Settle indexes from each part of the list
         int a = start;
@@ -98,7 +171,7 @@ public class MergeSort {
         }
     }
 
-    private static void mergeDescending(int[] arr, int start, int mid, int end)
+    private static void mergeDescendingInPlace(int[] arr, int start, int mid, int end)
     {
         int i, temp;
         //Settle indexes from each part of the list
