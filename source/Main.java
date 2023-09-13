@@ -96,7 +96,11 @@ public class Main {
                 }
                 case 2:
                 {
-                    Sort.insertionSort(copyArr, ASCENDING);
+                    //Sort.insertionSort(copyArr, ASCENDING);
+                    System.out.println("Input both range start end:");
+                    int start = sc.nextInt();
+                    int end = sc.nextInt();
+                    InsertionSort.insertionSortInRange(copyArr, start, end);
                     Debug.printArray(copyArr);
                     break;
                 }
@@ -108,7 +112,7 @@ public class Main {
                 }
                 case 4:
                 {
-                    Sort.hybridSort(copyArr);
+                    Sort.hybridSort(copyArr, 0, size - 1);
                     Debug.printArray(copyArr);
                     break;
                 }

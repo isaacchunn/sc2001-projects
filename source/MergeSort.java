@@ -36,7 +36,7 @@ public class MergeSort {
         }
     }
 
-    private static void mergeAscending(int[] arr, int start, int mid, int end) {
+    public static void mergeAscending(int[] arr, int start, int mid, int end) {
         int i, temp;
         //Settle indexes from each part of the list
         int a = start;

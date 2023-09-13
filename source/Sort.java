@@ -18,9 +18,12 @@ public class Sort {
         System.out.println(mode + "Key Comparisons: " + keyComparisons);
 
     }
-    public static void hybridSort(int[] arr)
+    public static void hybridSort(int[] arr, int start, int end)
     {
-
+        Sort.keyComparisons = 0;
+        HybridSort.hybridSort(arr, start, end);
+        //String mode = ascending ? "[Ascending Insertion Sort] " : "[Descending Insertion Sort] ";
+        System.out.println("Key Comparisons: " + keyComparisons);
 
     }
 
