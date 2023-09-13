@@ -190,7 +190,7 @@ public class Main {
             }
                 //Try writing into a directory
                 try {
-                    writer = new FileWriter("data/S_" + Sort.S + "_VaryingN_"+ (sampleSize - step) +".csv");
+                    writer = new FileWriter("data/FixedS_VaryingN/S_" + Sort.S + "_VaryingN_"+ (sampleSize - step) +".csv");
                     writer.write(line);
                     writer.close();
                 } catch (IOException e) {
