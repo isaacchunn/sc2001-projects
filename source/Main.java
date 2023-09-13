@@ -166,8 +166,9 @@ public class Main {
             String line = "Size(n),S,Key Comparisons,Time(ms),Time(s)\n";
             System.out.println("Running Fixed S=" + Sort.S + " with Varying N with step: " + step);
             boolean first = true;
+            int sampleSize;
             //Size
-            for (int sampleSize = 10; sampleSize <= 10000000; sampleSize += step) {
+            for (sampleSize = 10; sampleSize <= 10000000; sampleSize += step) {
                 int[] newArr = new int[sampleSize];
                 // create array up to size(n)
                 for (int j = 0; j < sampleSize; j++) {
@@ -176,24 +177,26 @@ public class Main {
                 timeStart = System.nanoTime();
                 newArr = Sort.hybridSortAuxillary(newArr, 0, sampleSize - 1);
                 timeDiff = System.nanoTime() - timeStart;
-                System.out.println("Sample Size: " + sampleSize + " | Key Comparisons: " + Sort.keyComparisons + "  ---  Time taken: "
-                        + timeDiff * Math.pow(10, -6) + "ms/ " + timeDiff * Math.pow(10, -9) + "s");
-                line += sampleSize + "," + Sort.S + "," + Sort.keyComparisons + "," + timeDiff * Math.pow(10, -9)
+                System.out.println("Sample Size: " + sampleSize + " | Key Comparisons: " + Sort.keyComparisons + " | Time: "
+                        + timeDiff * Math.pow(10, -6) + "ms/" + timeDiff * Math.pow(10, -9) + "s");
+                line += sampleSize + "," + Sort.S + "," + Sort.keyComparisons + "," + timeDiff *Math.pow(10,-6) + ","+ timeDiff * Math.pow(10, -9)
                         + "\n";
-                //Try writing into a directory
-                try {
-                    writer = new FileWriter("data/S_" + Sort.S + "_VaryingN.csv");
-                    writer.write(line);
-                    writer.close();
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                }
                 //Ghetto method to start at step
                 if(first)
                 {
                     sampleSize = 0;
                     first = false;
                 }
+            }
+                //Try writing into a directory
+                try {
+                    writer = new FileWriter("data/S_" + Sort.S + "_VaryingN_"+ (sampleSize - step) +".csv");
+                    writer.write(line);
+                    writer.close();
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+
             }
             //else if (ans == 2)
             {
@@ -204,4 +207,3 @@ public class Main {
         }
 
     }
-}
