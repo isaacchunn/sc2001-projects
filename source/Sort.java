@@ -12,10 +12,10 @@ public class Sort {
     {
         //Reset our key comparisons to be 0
         Sort.keyComparisons = 0;
-        MergeSort.mergeSortInPlace(arr,start,end, ascending);
+        MergeSort.mergeSortInPlace(arr,start,end);
         //Print out key comparisons
-        String mode = ascending ? "[Ascending Merge Sort] " : "[Descending Merge Sort] ";
-        System.out.println(mode + "Key Comparisons: " + keyComparisons);
+        //String mode = ascending ? "[Ascending Merge Sort] " : "[Descending Merge Sort] ";
+        //System.out.println(mode + "Key Comparisons: " + keyComparisons);
     }
 
     public static int[] mergeSortAuxiliary(int[] arr, int start, int end)
@@ -23,7 +23,7 @@ public class Sort {
         //Reset our key comparisons to be 0
         Sort.keyComparisons = 0;
         int[] sorted = MergeSort.mergeSortAuxiliary(arr,start,end);
-        System.out.println("[Aux MS] Key Comparisons: " + keyComparisons);
+        //System.out.println("[Aux MS] Key Comparisons: " + keyComparisons);
         return sorted;
     }
     public static void hybridSortInPlace(int[] arr, int start, int end)

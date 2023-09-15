@@ -18,7 +18,7 @@ start  mid     end
 public class MergeSort {
 
     //Main merge sort function
-    public static void mergeSortInPlace(int[] arr, int start, int end, boolean ascending) {
+    public static void mergeSortInPlace(int[] arr, int start, int end) {
         //Check if start < end
         //If start == end (single element (one index))
         //If start < end (at least 2 elements, considered a "large problem")
@@ -26,13 +26,9 @@ public class MergeSort {
             //Calculate mid
             int mid = (start + end) / 2;
             //Split the list into two halfs and call recursively
-            mergeSortInPlace(arr, start, mid, ascending);
-            mergeSortInPlace(arr, mid + 1, end, ascending);
-
-            if (ascending)
-                mergeAscendingInPlace(arr, start, mid, end);
-            else
-                mergeDescendingInPlace(arr, start, mid, end);
+            mergeSortInPlace(arr, start, mid);
+            mergeSortInPlace(arr, mid + 1, end);
+            mergeAscendingInPlace(arr, start, mid, end);
         }
     }
 
