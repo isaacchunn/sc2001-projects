@@ -61,18 +61,20 @@ public class MergeSort {
         left = mergeSortAuxiliary(arr,start,mid);
         int[] right = new int[rightSize];
         right = mergeSortAuxiliary(arr, mid+1, end);
-        sortedAuxArr = mergeAscendingAuxillary(left, right, leftSize, rightSize);
+        sortedAuxArr = mergeAscendingAuxiliary(left, right, leftSize, rightSize);
 
         return sortedAuxArr;
     }
 
     //Two way merge sort iterative
-    public static int[] mergeAscendingAuxillary(int[] left, int[] right, int lSize, int rSize)
+    public static int[] mergeAscendingAuxiliary(int[] left, int[] right, int lSize, int rSize)
     {
         //Create our new array from the sizes
         int[] sortedArr = new int [lSize + rSize];
         //Handle the trivial case
-        if(lSize == 0)
+        if(lSize + rSize == 0)
+            return null;
+        else if(lSize == 0)
             return right;
         else if(rSize == 0)
             return left;
