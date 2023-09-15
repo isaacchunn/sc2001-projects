@@ -18,11 +18,11 @@ public class Sort {
         System.out.println(mode + "Key Comparisons: " + keyComparisons);
     }
 
-    public static int[] mergeSortAuxillary(int[] arr, int start, int end)
+    public static int[] mergeSortAuxiliary(int[] arr, int start, int end)
     {
         //Reset our key comparisons to be 0
         Sort.keyComparisons = 0;
-        int[] sorted = MergeSort.mergeSortAuxillary(arr,start,end);
+        int[] sorted = MergeSort.mergeSortAuxiliary(arr,start,end);
         System.out.println("[Aux MS] Key Comparisons: " + keyComparisons);
         return sorted;
     }
@@ -35,10 +35,10 @@ public class Sort {
 
     }
 
-    public static int[] hybridSortAuxillary(int [] arr, int start, int end)
+    public static int[] hybridSortAuxiliary(int [] arr, int start, int end)
     {
         Sort.keyComparisons = 0;
-        int[] sorted = HybridSort.hybridSortAuxillary(arr,start,end);
+        int[] sorted = HybridSort.hybridSortAuxiliary(arr,start,end);
         System.out.println("Key Comparisons: " + keyComparisons);
         return sorted;
     }

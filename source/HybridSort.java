@@ -28,7 +28,7 @@ public class HybridSort {
         }
     }
 
-    public static int[] hybridSortAuxillary(int[] arr, int start, int end)
+    public static int[] hybridSortAuxiliary(int[] arr, int start, int end)
     {
         //This is a trivial case (just 1 element, so no sorting required)
         if(start == end)
@@ -49,9 +49,9 @@ public class HybridSort {
         int lSize =mid - start + 1;
         int rSize = end - mid;
         int[] left = new int[lSize];
-        left = hybridSortAuxillary(arr,start, mid);
+        left = hybridSortAuxiliary(arr,start, mid);
         int[] right = new int[rSize];
-        right = hybridSortAuxillary(arr, mid+1, end);
+        right = hybridSortAuxiliary(arr, mid+1, end);
         sortedArr = MergeSort.mergeAscendingAuxillary(left,right,lSize,rSize);
         return sortedArr;
     }

@@ -36,7 +36,7 @@ public class MergeSort {
         }
     }
 
-    public static int[] mergeSortAuxillary(int[] arr, int start, int end)
+    public static int[] mergeSortAuxiliary(int[] arr, int start, int end)
     {
         //Calculate size of array
         int size = end - start + 1;
@@ -58,9 +58,9 @@ public class MergeSort {
         //Create new subarrays
         int[] left = new int[leftSize];
         //Go into left
-        left = mergeSortAuxillary(arr,start,mid);
+        left = mergeSortAuxiliary(arr,start,mid);
         int[] right = new int[rightSize];
-        right = mergeSortAuxillary(arr, mid+1, end);
+        right = mergeSortAuxiliary(arr, mid+1, end);
         sortedAuxArr = mergeAscendingAuxillary(left, right, leftSize, rightSize);
 
         return sortedAuxArr;
