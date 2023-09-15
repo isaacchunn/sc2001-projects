@@ -108,6 +108,7 @@ public class AlgorithmTester {
                     Sort.mergeSortInPlace(copyArr, 0, size - 1, ASCENDING);
                     timeDiff = System.nanoTime() - timeStart;
                     Debug.printArray(copyArr);
+                    System.out.println("Key Comparisons: " + Sort.keyComparisons);
                     System.out.println("Time taken: " + timeDiff * Math.pow(10, -6) + "ms" + "/" + timeDiff * Math.pow(10, -9) + "s");
                     break;
                 }
@@ -116,7 +117,7 @@ public class AlgorithmTester {
                     timeStart = System.nanoTime();
                     copyArr = Sort.mergeSortAuxiliary(copyArr, 0, size - 1);
                     timeDiff = System.nanoTime() - timeStart;
-                    //Debug.printArray(copyArr);
+                    Debug.printArray(copyArr);
                     System.out.println("Key Comparisons: " + Sort.keyComparisons);
                     System.out.println("Time taken: " + timeDiff * Math.pow(10, -6) + "ms" + "/" + timeDiff * Math.pow(10, -9) + "s");
                     break;
@@ -136,8 +137,7 @@ public class AlgorithmTester {
                     timeStart = System.nanoTime();
                     copyArr = Sort.hybridSortAuxiliary(copyArr, 0, size - 1);
                     timeDiff = System.nanoTime() - timeStart;
-                    //Debug.printArray(copyArr);
-                    System.out.println("Key Comparisons: " + Sort.keyComparisons);
+                    Debug.printArray(copyArr);
                     System.out.println("Time taken: " + timeDiff * Math.pow(10, -6) + "ms" + "/" + timeDiff * Math.pow(10, -9) + "s");
                     break;
                 }
