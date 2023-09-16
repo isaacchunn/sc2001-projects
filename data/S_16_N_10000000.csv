@@ -1,0 +1,6 @@
+ ,S = 16,Size(N) = 10000000
+ ,Merge, , ,Hybrid
+ ,Key Comparisons, Time taken(ms), ,Key Comparisons, Time taken(ms)
+ ,217951442,5010164.281401, ,224270297,1249.6464999999998
+
+Average,217951442,5010164.281401, ,224270297,1249.6464999999998

@@ -38,8 +38,8 @@ public class Sort {
     public static int[] hybridSortAuxiliary(int [] arr, int start, int end)
     {
         Sort.keyComparisons = 0;
-        int[] sorted = HybridSort.hybridSortAuxiliary(arr,start,end);
-        System.out.println("Key Comparisons: " + keyComparisons);
+        int[] sorted = HybridSort.hybridSort(arr,start,end);
+        //System.out.println("Key Comparisons: " + keyComparisons);
         return sorted;
     }
 

@@ -28,7 +28,7 @@ public class HybridSort {
         }
     }
 
-    public static int[] hybridSortAuxiliary(int[] arr, int start, int end)
+    public static int[] hybridSort(int[] arr, int start, int end)
     {
         //Means at least 2 elements
         if(start < end)
@@ -47,9 +47,9 @@ public class HybridSort {
             int lSize = mid - start + 1;
             int rSize = end - mid;
             int[] left = new int[lSize];
-            left = hybridSortAuxiliary(arr,start, mid);
+            left = hybridSort(arr,start, mid);
             int[] right = new int[rSize];
-            right = hybridSortAuxiliary(arr, mid+1, end);
+            right = hybridSort(arr, mid+1, end);
             sortedArr = MergeSort.mergeAscendingAuxiliary(left,right,lSize,rSize);
             return sortedArr;
         }
