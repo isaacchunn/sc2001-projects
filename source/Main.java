@@ -28,13 +28,14 @@ public class Main {
             System.out.println("Input S: ");
             Sort.S = sc.nextInt();
             System.out.println("Input number of samples:");
-            int samples = sc.nextInt();
-            int step = 10000000 / samples;
-            String line = "Size(n),S,Key Comparisons,Time(ms),Time(s)\n";
-            System.out.println("Running Fixed S=" + Sort.S + " with Varying N with step: " + step);
+
             //Always start with 10 samples, and then run later on
             boolean first = true;
+            int samples = sc.nextInt();
+            int step = 10000000 / samples;
             int sampleSize;
+            String line = "Size(n),S,Key Comparisons,Time(ms),Time(s)\n";
+            System.out.println("Running Fixed S=" + Sort.S + " with Varying N with step: " + step);
             //Size
             for (sampleSize = step; sampleSize <= 10000000; sampleSize += step) {
                 int[] newArr = new int[sampleSize];
@@ -125,7 +126,7 @@ public class Main {
 
             //Handle initial string
             String line = " ,S = " + Sort.S +",Size(N) = " + n + "\n";
-            line += " ,Merge" + ", , ," +"Hybrid" +"\n";
+            line += " ,Merge Aux" + ", , ," +"Hybrid" +"\n";
             line += " ,Key Comparisons, Time taken(ms), ,Key Comparisons, Time taken(ms)\n";
 
             //Make only one object for in place as it takes very long.
@@ -145,16 +146,16 @@ public class Main {
                 //Populate with random stuff per sample
                 for(int j = 0; j < n; j++)
                 {
-                    arr[j] = random.nextInt(n * 2);
+                    arr[j] = random.nextInt(n * 5);
                 }
                 //Copy into array
                 System.arraycopy(arr,0,copyArr,0,n-1);
                 //MERGE
                 timeStart = System.nanoTime();
                 //Sort the array
-                Sort.mergeSortInPlace(copyArr,0,n-1, true);
+                copyArr =Sort.mergeSortAuxiliary(copyArr,0,n-1);
                 timeDiff = System.nanoTime() - timeStart;
-                System.out.println("[Merge Sort: " + (i+1) +"] Sample Size: " + n + " | S: " + Sort.S + " | Key Comparisons: " + Sort.keyComparisons + " | Time: "
+                System.out.println("[Merge Sort Aux: " + (i+1) +"] Sample Size: " + n + " | S: " + Sort.S + " | Key Comparisons: " + Sort.keyComparisons + " | Time: "
                         + timeDiff * Math.pow(10, -6) + "ms/" + timeDiff * Math.pow(10, -9) + "s");
                 mergeResults[i] = new Result(Sort.keyComparisons,timeDiff * Math.pow(10, -6),timeDiff * Math.pow(10, -9));
                 //Add the key comparisons and time
@@ -187,7 +188,7 @@ public class Main {
 
 
             try{
-                writer= new FileWriter("data/Sort_Comparisons/S_" + Sort.S+"_N_" + n +".csv");
+                writer= new FileWriter("data/S_" + Sort.S+"_N_" + n +".csv");
                 writer.write(line);
                 writer.close();
             }catch (IOException e)
