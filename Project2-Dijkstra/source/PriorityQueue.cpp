@@ -56,6 +56,7 @@ Node* PriorityQueue::Top()
 
 	//Then remove last index variable in heap
 	heap.GetElements().erase(heap.GetElements().begin() + heap.GetElements().size() - 1);
+    return n;
 }
 
 void PriorityQueue::PrintQueue()
