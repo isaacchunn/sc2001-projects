@@ -1,2 +1,2 @@
-# sc2001-HybridSort
+# sc2001-Projects
  
