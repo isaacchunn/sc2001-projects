@@ -9,6 +9,7 @@
 #define NODE_H
 
 #include <string>
+#include <iostream>
 
 class Node
 {
@@ -30,6 +31,15 @@ public:
     
     void SetVertex(int vertex);
     void SetDistanceFromSource(int distance);
-    void Setname(std::string name);
+    void SetName(std::string name);
+
+    //Overload and add comparisons for heap
+    bool operator>(const Node* other);
+    bool operator<(const Node* other);
+    bool operator>=(const Node* other);
+    bool operator<=(const Node* other);
+
+    //Overloaded ostream
+    friend std::ostream& operator<<(std::ostream& os, const Node* date);
 };
 #endif /* NODE_H */

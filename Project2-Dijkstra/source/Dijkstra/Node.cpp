@@ -48,7 +48,37 @@ void Node::SetDistanceFromSource(int distance)
     this->dist = distance;
 }
 
-void Node::Setname(std::string name)
+void Node::SetName(std::string name)
 {
     this->name = name;
+}
+
+bool Node::operator>(const Node* other)
+{
+    return this->dist > other->dist;
+}
+
+bool Node::operator<(const Node* other)
+{
+    return this->dist < other->dist;
+}
+
+bool Node::operator>=(const Node* other)
+{
+    return this->dist >= other->dist;
+}
+
+bool Node::operator<=(const Node* other)
+{
+    return this->dist <= other->dist;
+}
+
+std::ostream& operator<<(std::ostream& os, const Node* other)
+{
+    os << other->vertex << ":";
+    if (other->dist == INT_MAX)
+        os << "MAX";
+    else
+        os << other->dist;
+    return os;
 }

@@ -9,10 +9,8 @@
 #include <iostream>
 #include "heap.h"
 
+/*
 using namespace std;
-
-
-
 int main(int argc, const char * argv[]) {
     //Create a new heap
     Heap<int> heap;
@@ -22,6 +20,7 @@ int main(int argc, const char * argv[]) {
     //Initialize the heap with some initial elements
     //vector<int> elements = {14,13,12,11,10,9,8,7,6,5,4,3,2,1};
     vector<int> elements = {1,2,3,4,5,6,7,8,9,10,11,12,13,14};
+    //vector<int> elements = { 1,2,3,4,5,6,7 };
     heap.SetElements(elements);
     
     //Then we want to construct our heap
@@ -48,6 +47,13 @@ int main(int argc, const char * argv[]) {
         cout << i << " ";
     }
     cout << "]\n";
-    
+    heap.PrintElements();
+    //Construct heap from our initial elements
+    heap.ConstructHeap();
+    //Print the heap
+    heap.PrintHeap();
+    //Print the elements of the array
+    heap.PrintElements();
     return 0;
 }
+*/
