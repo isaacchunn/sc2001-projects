@@ -1,0 +1,69 @@
+#ifndef HEAP_H
+#define HEAP_H
+
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std; 
+
+enum HEAP_TYPE
+{
+    MAXIMISING,
+    MINIMISING,
+    TOTAL_MODE
+};
+
+//Create a class template for
+template <class T>
+class Heap
+{
+    private:
+        //Have the heap store a vector of elements
+        std::vector<T> elements;
+        //Store the type of heap
+        HEAP_TYPE heapType;
+        //Store last pointer to present the "sorted result"
+        int last_ptr;
+        //Store the name of this heap for identification
+        string heapName;
+        //Misc
+        int keyComparisons = 0;
+
+    public:
+        //Constructors, Destructors
+        Heap();
+        Heap(HEAP_TYPE type, string name);
+        ~Heap();
+        
+        //Accessors and Mutators
+        void SetHeapType(HEAP_TYPE type);
+        void SetName(string name);
+        HEAP_TYPE GetHeapType();
+        string GetName();
+        vector<T> GetElements();
+        
+        //Print the heap
+        void PrintElements();
+        void PrintHeap();
+        void PrintHeapArray();
+
+        //Typical methods of heap
+        bool ConstructHeap();
+        bool SetElements(vector<T>& other);
+        bool Insert(T element);
+        void Delete();
+        //*
+        bool HeapSort(vector<T>& result);
+
+    private:
+        //Private methods that are exclusive to the heap
+        void Heapify(int H);
+        void FixHeap(int H, T k, int maxIndex);
+        bool isLeaf(int H);
+};
+
+//template file inclusion
+#include "heap_t.tpp"
+
+#endif
