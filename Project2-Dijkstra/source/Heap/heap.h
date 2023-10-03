@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "../Dijkstra/Node.h"
+
 
 using namespace std; 
 
@@ -53,6 +55,7 @@ class Heap
         bool SetElements(vector<T>& other);
         bool Insert(T element);
         void Delete();
+        void Delete(T element);
         //*
         bool HeapSort(vector<T>& result);
 
@@ -63,6 +66,7 @@ class Heap
         bool isLeaf(int H);
 };
 
+template class Heap<Node*>;
 //template file inclusion
 #include "heap_t.tpp"
 
