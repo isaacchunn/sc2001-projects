@@ -1,9 +1,8 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <map>
+#include <unordered_map>
 #include <vector>
-#include "Node.h"
 #include "ListNode.h"
 
 using namespace std;

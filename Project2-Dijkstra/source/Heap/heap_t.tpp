@@ -191,9 +191,13 @@ void Heap<T>::Delete()
 
 	//Store the last element of heap into temp variable and decrement last ptr
 	T k = elements[last_ptr--];
+	
 
 	//Then fix heap based on first index and k up to the last ptr index
 	FixHeap(0, k, last_ptr);
+
+	//Then remove last index variable in heap
+	elements.pop_back();
 }
 
 /// <summary>
@@ -258,7 +262,7 @@ bool Heap<T>::HeapSort(vector<T>& result)
 		//Call the delete function
 		Delete();
 		//Then assign this curr max to the end of our array (should return something here later on)
-		elements[i] = currMax;
+		//elements[i] = currMax;
 		result[i] = currMax;
 	}
 	return true;

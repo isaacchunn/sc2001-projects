@@ -11,7 +11,7 @@
 
 using namespace std;
 
-
+/*
 int main(int argc, const char * argv[]) {
     PriorityQueue pq = PriorityQueue(HEAP_TYPE::MINIMISING);
     Node* n1 = new Node(0, 1, "Node1");
@@ -28,3 +28,4 @@ int main(int argc, const char * argv[]) {
     pq.PrintQueue();
     return 0;
 }
+*/

@@ -17,8 +17,8 @@ void Dijkstra::CalculateShortestPath(Graph *g , Node * source)
     
     //Initialize new priority queue
     //Priority queue in terms of int distances, we will utilise the map
-    priority_queue<Node*, vector<Node*>, greater<int>> pq;
-    
+    PriorityQueue pq = PriorityQueue(HEAP_TYPE::MINIMISING);
+
     //Clear our previous vectors
     pi.clear();
     S.clear();
@@ -44,25 +44,24 @@ void Dijkstra::CalculateShortestPath(Graph *g , Node * source)
     //Update distinct paths of source to source to be 1
     pathCount[source->GetVertex()] = 1;
     
-    //Store all into priority queue
-    for(int v = 0; v < g->V; v++)
+    //Push source into priority queue
+    for (int v = 0; v < g->V; v++)
     {
-        //Push all inside
-        pq.push(g->nodes[v]);
+        //Insert all nodes
+        pq.Insert(g->nodes[v]);
     }
     
     //Print iterations
     int iteration = 1;
     
     //While the queue is not empty, extract
-    //while(!pq.empty())
+    while (!pq.isEmpty())
     {
 #ifdef DEBUGPRINT
         Debug(g,iteration++);
 #endif
         //Pop first u to get first vertex
-        Node * u = pq.top();
-        pq.pop();
+        Node * u = pq.Top();
         //Set in array that this node is the smallest at this iteration
         S[u->GetVertex()] = 1;
         
@@ -76,10 +75,18 @@ void Dijkstra::CalculateShortestPath(Graph *g , Node * source)
             {
                 //There is a link
                 Node * adjNode = g->nodes[i];
+
+                ////Add it to queue if not already
+                //if (S[adjNode->GetVertex()] == 0)
+                //    pq.Insert(adjNode);
+
                 //If this node is not in the shortest path set
                 //And the current distance to the node is more than the current cost to REACH current vertex + distance from this vertex to node
                 if(S[adjNode->GetVertex()] != 1 && adjNode->GetDistanceFromSource() > u->GetDistanceFromSource() + cost)
-                {
+                {                   
+                    //Remove this node and update back
+                    pq.Delete(adjNode);
+                
                     //Update the distance of adjacent node to the shorter distance
                     adjNode->SetDistanceFromSource(u->GetDistanceFromSource() + cost);
                     //Update pre-decessor
@@ -87,21 +94,9 @@ void Dijkstra::CalculateShortestPath(Graph *g , Node * source)
                     
                     //Update the counts to take into the distinct shortest paths of the parent as the shortest path is now from the parent
                     pathCount[adjNode->GetVertex()] = pathCount[u->GetVertex()];
+
+                    pq.Insert(adjNode);
                     
-                    //Swap with another empty queue and populate
-                    priority_queue<Node*, vector<Node*>, greater<int>> emptyPQ;
-                    pq.swap(emptyPQ);
-                    
-                    //Append all nodes into the priority queue after updating the distance sof node
-                    for(int v = 0; v < g->V; v++)
-                    {
-                        //As long as this vertex is not already in the set S
-                        if(S[v] != 1)
-                        {
-                            //Push all inside
-                            pq.push(g->nodes[v]);
-                        }
-                    }
                 }
                 else if(S[adjNode->GetVertex()] != 1 && adjNode->GetDistanceFromSource() == u->GetDistanceFromSource() + cost)
                 {
@@ -125,7 +120,7 @@ void Dijkstra::FindShortestPath(Graph * g, Node * source, Node * target)
         cout << "Null pointer exception in finding shortest path" << endl;
         return;
     }
-    //Calculate our shortest paths from the soruce node given
+    //Calculate our shortest paths from the source node given
     CalculateShortestPath(g, source);
     vector<Node*> path;
     //Assign current node to be target so we can get our path in reverse

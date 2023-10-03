@@ -48,14 +48,17 @@ Node* PriorityQueue::Top()
 {
 	//If the heap is empty
 	if (isEmpty())
+	{
+		cout << "Empty heap" << endl;
 		return NULL;
+	}
+	
 
 	//Else we can get the heap's first index and call delete
 	Node* n = heap.GetElements()[0];
 	heap.Delete();
 
-	//Then remove last index variable in heap
-	heap.GetElements().erase(heap.GetElements().begin() + heap.GetElements().size() - 1);
+	return n;
 }
 
 void PriorityQueue::PrintQueue()

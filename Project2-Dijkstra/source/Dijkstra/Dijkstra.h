@@ -3,8 +3,8 @@
 
 #include "Graph.h"
 #include "Node.h"
-#include <queue>
 #include <iostream>
+#include "../PriorityQueue.h"
 
 class Dijkstra
 {
