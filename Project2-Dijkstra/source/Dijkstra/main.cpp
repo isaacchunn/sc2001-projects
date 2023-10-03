@@ -59,11 +59,11 @@ int main()
 	graph->adjMatrix[4] = { INT_MAX,INT_MAX,INT_MAX,INT_MAX,0 };
 
 	//Make many nodes for now to test (not the best implementation, just testing it out)
-	Node* s = new Node(0, 0, "s");
-	Node* u = new Node(1, 0, "u");
-	Node* x = new Node(2, 0, "x");
-	Node* v = new Node(3, 0, "v");
-	Node* y = new Node(4, 0, "y");
+	Node* s = new Node(0, 0, "1");
+	Node* u = new Node(1, 0, "2");
+	Node* x = new Node(2, 0, "3");
+	Node* v = new Node(3, 0, "4");
+	Node* y = new Node(4, 0, "5");
 
 	//Add into our graph the above nodes, storing the vertex as keys (assumes no vertex are repeated)
 	graph->nodes[s->GetVertex()] = s;
@@ -76,7 +76,7 @@ int main()
 	printGraphMatrix(graph);
 
 	//Then try print the shortest path from the soruce node to end point
-	Dijkstra::FindShortestPath(graph, s, y);
+	Dijkstra::FindShortestPath(graph, x, y);
 
 	return 0;
 }

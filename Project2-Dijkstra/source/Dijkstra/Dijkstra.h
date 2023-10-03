@@ -11,8 +11,7 @@ class Dijkstra
 public:
 	//Simple wrapper that contains a static method
 	static void CalculateShortestPath(Graph * g, Node * source);
-    static void FindShortestPath(Graph * g, Node * source, Node* end);
-
+    static void FindShortestPath(Graph * g, Node * source, Node* end);    
 private:
     //Vector that stores the distance of each vertex to source node
 	//static vector<int> d;

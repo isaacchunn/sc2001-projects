@@ -44,12 +44,8 @@ void Dijkstra::CalculateShortestPath(Graph *g , Node * source)
     //Update distinct paths of source to source to be 1
     pathCount[source->GetVertex()] = 1;
     
-    //Push source into priority queue
-    for (int v = 0; v < g->V; v++)
-    {
-        //Insert all nodes
-        pq.Insert(g->nodes[v]);
-    }
+    //Insert source as first element of priority queue
+    pq.Insert(source);
     
     //Print iterations
     int iteration = 1;
@@ -62,6 +58,7 @@ void Dijkstra::CalculateShortestPath(Graph *g , Node * source)
 #endif
         //Pop first u to get first vertex
         Node * u = pq.Top();
+        cout << "Popped " << u->GetName() << " with vertex " << u->GetVertex() << endl;
         //Set in array that this node is the smallest at this iteration
         S[u->GetVertex()] = 1;
         
@@ -75,11 +72,13 @@ void Dijkstra::CalculateShortestPath(Graph *g , Node * source)
             {
                 //There is a link
                 Node * adjNode = g->nodes[i];
+                
+                if(S[adjNode->GetVertex()] == 0)
+                {
+                    pq.Insert(adjNode);
 
-                ////Add it to queue if not already
-                //if (S[adjNode->GetVertex()] == 0)
-                //    pq.Insert(adjNode);
-
+                }
+                    
                 //If this node is not in the shortest path set
                 //And the current distance to the node is more than the current cost to REACH current vertex + distance from this vertex to node
                 if(S[adjNode->GetVertex()] != 1 && adjNode->GetDistanceFromSource() > u->GetDistanceFromSource() + cost)

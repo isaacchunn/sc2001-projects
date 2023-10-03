@@ -23,6 +23,7 @@ bool PriorityQueue::Insert(Node* n)
 {
 	if (n == NULL)
 		return false;
+    cout << "Inserting vertex " << n->GetName() << endl;
 	heap.Insert(n);
 	return true;
 }

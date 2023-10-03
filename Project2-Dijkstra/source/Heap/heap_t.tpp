@@ -169,6 +169,9 @@ bool Heap<T>::SetElements(vector<T>& other)
 template <class T>
 bool Heap<T>::Insert(T element)
 {
+    if(std::find(elements.begin(), elements.end(), element) != elements.end())
+        return false;
+        
 	//Insert at the back and then reconstruct heap
 	this->elements.push_back(element);
 	//Reconstruct our heap
