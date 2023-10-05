@@ -7,8 +7,8 @@
 
 using namespace std;
 
-
 #define M INT_MAX
+
 
 int main()
 {
@@ -68,6 +68,7 @@ int main()
 		}
 		case 2:
 		{
+			//TODO
 			break;
 		}
 		case 3:
@@ -76,9 +77,9 @@ int main()
 			std::string fileName;
 			cin >> fileName;
 			string filePath = "data/" + fileName + ".csv";
-			if(graph->LoadGraph(filePath))
+			if (graph->LoadGraph(filePath))
 				cout << "Graph sucessfully imported from " + filePath << endl;
-	
+
 			break;
 		}
 		case 4:
@@ -92,22 +93,22 @@ int main()
 			break;
 		}
 		case 5:
-		{	
+		{
 			int sourceVertex, endVertex, mode;
 			cout << "Input source vertex: " << endl;
 			cin >> sourceVertex;
 			cout << "Input end vertex: " << endl;
 			cin >> endVertex;
-			cout << "Input mode (0: HEAP, 1: ARRAY)";
+			cout << "Input mode (0: HEAP, 1: ARRAY): ";
 			cin >> mode;
-			
+
 
 			//Then try print the shortest path from the soruce node to end point
 			Dijkstra::FindShortestPath(graph, sourceVertex, endVertex, (QUEUE_TYPE)mode);
 			break;
 		}
 		case 6:
-		{			
+		{
 			int sourceVertex, mode;
 			cout << "Input source vertex: " << endl;
 			cin >> sourceVertex;
@@ -118,15 +119,17 @@ int main()
 		}
 		case 7:
 		{
-
-		}
-		default:
 			break;
 		}
-
+		default:
+		{
+			break;
+		}
+		}
 
 	} while (choice != 7);
 	return 0;
 }
+
 
 

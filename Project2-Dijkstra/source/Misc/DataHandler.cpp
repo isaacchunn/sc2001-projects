@@ -75,7 +75,8 @@ bool DataHandler::ReadCSV(string fileName, vector<std::pair<int, int>>& pairData
 				weights.push_back(weight);
 			}
 			//Then update graph size
-			graphSize = verticeCount;
+			if(verticeCount != -INT_MAX)
+				graphSize = verticeCount;
 		}
 		myFile.close();
 	}

@@ -70,43 +70,44 @@ void Dijkstra::CalculateShortestPathHeap(Graph *g , Node * source)
         //Update visited array
         S[u->GetVertex()] = 1;
         //Then for each vertex v adjacent to u
-        //Look into our adjacency matrix
-        for(int i = 0; i < g->V; i++)
+        //Use the adjacency list
+        ListNode* curr = g->adjList[u->GetVertex()];
+        //Go through all the neighbours
+        while (curr != NULL)
         {
-            //Look through adjacent nodes
-            int cost = g->adjMatrix[u->GetVertex()][i];
-            if(cost != INT_MAX)
+            Node* adjNode = curr->node;
+   
+            //If the node has not been visited yet, and is not already in the queue, we add it.
+            if (S[adjNode->GetVertex()] == 0)
             {
-                //There is a link
-                Node * adjNode = g->nodes[i];
-                //If the node has not been visited yet, and is not already in the queue, we add it.
-                if(S[adjNode->GetVertex()] == 0)
-                {
-                    pq.Insert(adjNode);
-                }
-                //If this node is not in the shortest path set
-                //And the current distance to the node is more than the current cost to REACH current vertex + distance from this vertex to node
-                if(S[adjNode->GetVertex()] != 1 && adjNode->GetDistanceFromSource() > u->GetDistanceFromSource() + cost)
-                {                   
-                    //Remove this node and update back
-                    pq.Delete(adjNode);            
-                    //Update the distance of adjacent node to the shorter distance
-                    adjNode->SetDistanceFromSource(u->GetDistanceFromSource() + cost);
-                    //Update pre-decessor
-                    pi[adjNode->GetVertex()] = u;              
-                    //Update the counts to take into the distinct shortest paths of the parent as the shortest path is now from the parent
-                    pathCount[adjNode->GetVertex()] = pathCount[u->GetVertex()];
-                    //Insert the node back into the queue with updated weights
-                    pq.Insert(adjNode);         
-                }
-                else if(S[adjNode->GetVertex()] != 1 && adjNode->GetDistanceFromSource() == u->GetDistanceFromSource() + cost)
-                {
-                    //This case handles the part where another adjacent node has the same cost (another distinct path)
-                    //Increment the count of adj node by that of u which includes all the unique paths that go to u
-                    pathCount[adjNode->GetVertex()] += pathCount[u->GetVertex()];
-                }
+                pq.Insert(adjNode);
             }
+            //If this node is not in the shortest path set
+            //And the current distance to the node is more than the current cost to REACH current vertex + distance from this vertex to node
+            if (S[adjNode->GetVertex()] != 1 && adjNode->GetDistanceFromSource() > u->GetDistanceFromSource() + curr->cost)
+            {
+                //Remove this node and update back
+                pq.Delete(adjNode);
+                //Update the distance of adjacent node to the shorter distance
+                adjNode->SetDistanceFromSource(u->GetDistanceFromSource() + curr->cost);
+                //Update pre-decessor
+                pi[adjNode->GetVertex()] = u;
+                //Update the counts to take into the distinct shortest paths of the parent as the shortest path is now from the parent
+                pathCount[adjNode->GetVertex()] = pathCount[u->GetVertex()];
+                //Insert the node back into the queue with updated weights
+                pq.Insert(adjNode);
+            }
+            else if (S[adjNode->GetVertex()] != 1 && adjNode->GetDistanceFromSource() == u->GetDistanceFromSource() + curr->cost)
+            {
+                //This case handles the part where another adjacent node has the same cost (another distinct path)
+                //Increment the count of adj node by that of u which includes all the unique paths that go to u
+                pathCount[adjNode->GetVertex()] += pathCount[u->GetVertex()];
+            }
+            curr = curr->next;
         }
+
+
+ 
     }
 #ifdef DEBUGPRINT
     Debug(g,iteration++);

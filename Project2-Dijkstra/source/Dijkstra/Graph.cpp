@@ -62,8 +62,13 @@ bool Graph::LoadGraph(std::string file)
 	vector<pair<int, int>> data;
 	vector<int> weights;
 
+	//Reset back to 0
+	this->V = 0;
+	this->E = 0;
+
 	if (!DataHandler::ReadCSV(file, data, weights, this->V))
 		return false;
+
 	//Update edge count
 	this->E = (int)data.size();
 	cout << "Managed to import graph with " << this->V << " vertices and " << this->E << " edges." << endl;
@@ -146,9 +151,11 @@ bool Graph::ExportGraph(std::string file)
 void Graph::PrintAdjMatrix()
 {
 	int i, j;
-
 	//Print the rows first.
 	printf("Adjacency Matrix\n");
+	if (this->V == 0)
+		return;
+
 	//Print divider.
 	for (i = 0; i < this->V; i++)
 	{
@@ -192,7 +199,6 @@ void Graph::PrintAdjMatrix()
 /// </summary>
 void Graph::PrintAdjList()
 {
-
 	//Variable declaration
 	int i;
 	ListNode* temp;
@@ -261,7 +267,6 @@ void Graph::UpdateAdjacencyList()
 
 			}
 		}
-		std::cout << endl;
 	}
 }
 
