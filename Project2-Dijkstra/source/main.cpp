@@ -10,74 +10,92 @@ using namespace std;
 void printGraphMatrix(Graph* g);
 void printGraphList(Graph* g);
 
+#define M INT_MAX
 
 int main()
 {
 	//Create a graph
 	Graph* graph = new Graph();
-	//Initialzie graph
-	graph->V = 0;
-	graph->V = 0;
 
-	//Assume each vertex starts from 0 (now hard coded to suit lecture's graph)
-	int vertexes = 5;
-	cout << "Input number of vertices: ";
-	//Get input
-	//cin >> vertexes;
-	cout << endl;
-
-	//Update size
-	graph->V = vertexes;
-	//Resize our graph vectors
-	//Initialize our adj list first
-	//graph->adjList.resize(graph->V);
-	//for (int i = 0; i < graph->V; i++)
-	//{
-	//	//No head is initialized as we are using indexing to determine adjacency
-	//	graph->adjList[i] = ll;
-	//}
-
-	graph->adjMatrix.resize(graph->V);
-	//Then do for our adj matrix
-	for (int i = 0; i < graph->V; i++)
+	int choice;
+	do
 	{
-		graph->adjMatrix[i].resize(graph->V);
-	}
+		//Print the UI
+		cout << "---Dijkstra Interface---" << endl;
+		cout << "1) Use Tutorial Graph" << endl;
+		cout << "2) dd" << endl;
+		cout << "3) Load Graph" << endl;
+		cout << "4) Export Graph" << endl;
+		cout << "5) Quit" << endl;
+		cout << "Input choice: ";
+		cin >> choice;
 
-	//Code it for lecture graph
-	//graph->adjMatrix[0] = {0,10,5,INT_MAX,INT_MAX};
-	//graph->adjMatrix[1] = {INT_MAX,0,2,1,INT_MAX};
-	//graph->adjMatrix[2] = {INT_MAX,3,0,9,2};
-	//graph->adjMatrix[3] = {INT_MAX,INT_MAX,INT_MAX,0,4};
-	//graph->adjMatrix[4] = {7,INT_MAX,INT_MAX,6,0};
+		switch (choice)
+		{
+			//Tutorial Graph
+		case 1:
+		{
+			//Set the number of vertices to be 5
+			graph->SetNoOfVertices(5);
+			//Tutorial graph for it's adjacency matrix
+			graph->adjMatrix = { { 0,4,2,6,8 },
+								 { M,0,M,4,3 },
+								 { M,M,0,1,M },
+								 { M,1,M,0,3 },
+								 { M,M,M,M,0 } };
 
-	//Tutorial graph for it's adjacency matrix
-	graph->adjMatrix[0] = { 0,4,2,6,8 };
-	graph->adjMatrix[1] = { INT_MAX,0,INT_MAX,4,3 };
-	graph->adjMatrix[2] = { INT_MAX,INT_MAX,0,1,INT_MAX };
-	graph->adjMatrix[3] = { INT_MAX,1,INT_MAX,0,3 };
-	graph->adjMatrix[4] = { INT_MAX,INT_MAX,INT_MAX,INT_MAX,0 };
+			//Make many nodes for now to test (not the best implementation, just testing it out)
+			Node* s = new Node(0, 0, "1");
+			Node* u = new Node(1, 0, "2");
+			Node* x = new Node(2, 0, "3");
+			Node* v = new Node(3, 0, "4");
+			Node* y = new Node(4, 0, "5");
 
-	//Make many nodes for now to test (not the best implementation, just testing it out)
-	Node* s = new Node(0, 0, "1");
-	Node* u = new Node(1, 0, "2");
-	Node* x = new Node(2, 0, "3");
-	Node* v = new Node(3, 0, "4");
-	Node* y = new Node(4, 0, "5");
+			//Add into our graph the above nodes, storing the vertex as keys (assumes no vertex are repeated)
+			graph->nodes[s->GetVertex()] = s;
+			graph->nodes[u->GetVertex()] = u;
+			graph->nodes[x->GetVertex()] = x;
+			graph->nodes[v->GetVertex()] = v;
+			graph->nodes[y->GetVertex()] = y;
 
-	//Add into our graph the above nodes, storing the vertex as keys (assumes no vertex are repeated)
-	graph->nodes[s->GetVertex()] = s;
-	graph->nodes[u->GetVertex()] = u;
-	graph->nodes[x->GetVertex()] = x;
-	graph->nodes[v->GetVertex()] = v;
-	graph->nodes[y->GetVertex()] = y;
+			//Update adjacency list
+			graph->UpdateAdjacencyList();
+			//Get input and update adj matrix
+			printGraphMatrix(graph);
+			printGraphList(graph);
 
-	//Get input and update adj matrix
-	printGraphMatrix(graph);
+			//Then try print the shortest path from the soruce node to end point
+			Dijkstra::FindShortestPath(graph, s, y, QUEUE_TYPE::ARRAY);
+			break;
+		}
+		case 2:
+		{
+			break;
+		}
+		case 3:
+		{
+			break;
+		}
+		case 4:
+		{
+			cout << "What name is this graph called?: ";
+			std::string fileName;
+			cin >> fileName;
+			string filePath = "data/" + fileName + ".csv";
+			cout << filePath << endl;
+			graph->ExportGraph(filePath);
+			break;
+		}
+		case 5:
+		{
+			break;
+		}
+		default:
+			break;
+		}
 
-	//Then try print the shortest path from the soruce node to end point
-	Dijkstra::FindShortestPath(graph, s, y, QUEUE_TYPE::ARRAY);
 
+	} while (choice != 5);
 	return 0;
 }
 
@@ -111,12 +129,12 @@ void printGraphMatrix(Graph* g)
 		printf("| %d\t|", i + 1);
 		for (j = 0; j < g->V; j++)
 		{
-			if(g->adjMatrix[i][j] == INT_MAX)
-				printf("\t%c",236);
+			if (g->adjMatrix[i][j] == INT_MAX)
+				printf("\t%c", 236);
 			else
 				printf("\t%d", g->adjMatrix[i][j]);
 		}
-			
+
 		printf("  |\n");
 	}
 	//Print divider.
@@ -130,24 +148,26 @@ void printGraphMatrix(Graph* g)
 /// @brief Prints the adjacency list of a graph
 /// @param g graph
 void printGraphList(Graph* g) {
-	/*
+
 	//Variable declaration
 	int i;
 	ListNode* temp;
 	//Sanity check
-
 	//Print at each index.
+	cout << "Legend: ConnectedNode:Cost" << endl;
 	for (i = 0; i < g->V; i++)
 	{
 		printf("%d:\t", i + 1);
 		temp = g->adjList[i];
 		while (temp != NULL) {
-			printf("%d -> ", temp->cost);
+			cout << temp->node->GetName() << ":" << temp->cost;
+			if (temp->next != NULL)
+				cout << " -> ";
 			temp = temp->next;
 		}
-		printf("\n");
+		cout << endl;
 	}
-	*/
+
 }
 
 

@@ -4,22 +4,30 @@
 #include <unordered_map>
 #include <vector>
 #include "ListNode.h"
+#include "../Misc/DataHandler.h"
 
 using namespace std;
 
-struct Graph
+class Graph
 {
-    //Number of vertices
-	int V;
-    //Int number of edges
-	int E;
-    
-    //Easy implementation to get nodes from indexes and vertexes
-    unordered_map<int,Node*> nodes;
-	//Adjacency Matrix Implementation
-	vector<vector<int>> adjMatrix;
-	//Adjacency List Implementation
-	vector<ListNode*> adjList;
+	public:
+		Graph();
+		~Graph();
+
+		//Public for ease of accessibility as I want functions so I dont use struct.
+		int V;
+		int E;
+
+		vector<vector<int>> adjMatrix;
+		vector<ListNode*> adjList;
+		unordered_map<int,Node*> nodes;
+		
+		//Functions
+		void SetNoOfVertices(int vertices);
+		void LoadGraph(std::string file);
+		void ExportGraph(std::string file);
+
+		void UpdateAdjacencyList();
 };
 
 #endif
