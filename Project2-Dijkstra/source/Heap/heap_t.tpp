@@ -137,7 +137,7 @@ bool Heap<T>::ConstructHeap()
 		return false;
 	}
 	//Reset last_ptr to elements.size
-	last_ptr = elements.size() - 1;
+	last_ptr = (int)elements.size() - 1;
 	//Reset key comparisons
 	keyComparisons = 0;
 	//Else just call heapify

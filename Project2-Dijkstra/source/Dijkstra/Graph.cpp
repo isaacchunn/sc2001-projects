@@ -65,7 +65,7 @@ bool Graph::LoadGraph(std::string file)
 	if (!DataHandler::ReadCSV(file, data, weights, this->V))
 		return false;
 	//Update edge count
-	this->E = data.size();
+	this->E = (int)data.size();
 	cout << "Managed to import graph with " << this->V << " vertices and " << this->E << " edges." << endl;
 
 	//Then resize our vectors accordingly

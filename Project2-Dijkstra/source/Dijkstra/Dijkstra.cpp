@@ -52,7 +52,9 @@ void Dijkstra::CalculateShortestPathHeap(Graph *g , Node * source)
     pq.Insert(source);
     
     //Print iterations
+#ifdef DEBUGPRINT
     int iteration = 1;
+#endif
     
     //While the queue is not empty, extract
     while (!pq.IsEmpty())
@@ -155,9 +157,11 @@ void Dijkstra::CalculateShortestPathArray(Graph* g, Node* source)
 
     //Insert source as first element of priority queue
     pq.Insert(source);
-
+    
     //Print iterations
+#ifdef DEBUG_PRINT
     int iteration = 1;
+#endif
 
     //While the queue is not empty, extract
     while (!pq.IsEmpty())
