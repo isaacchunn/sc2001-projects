@@ -11,7 +11,7 @@ class PriorityQueueArray
 		std::vector<Node*> queue;
 	public:
 		PriorityQueueArray();
-		PriorityQueueArray(HEAP)
+		//PriorityQueueArray(HEAP)
 	
 };
 #endif
