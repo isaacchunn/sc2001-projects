@@ -24,6 +24,10 @@ class Dijkstra
 public:
 	//Simple wrapper that contains a static method
     static void FindShortestPath(Graph * g, Node * source, Node* end, QUEUE_TYPE type);    
+    static void FindShortestPath(Graph* g, int sourceVertex, int endVertex, QUEUE_TYPE type);
+    static void CalculateShortestPath(Graph* g, Node * source, QUEUE_TYPE type);
+    static void CalculateShortestPath(Graph* g, int sourceVertex, QUEUE_TYPE type);
+
 private:
     //Vector that stores the predecessor "node" of the associated shortest path
 	static vector<Node*> pi;
@@ -34,10 +38,12 @@ private:
     
     //Debugging function
     static void Debug(Graph * g, int iteration);
-
     //Graph function to calculate shortest path
     static void CalculateShortestPathHeap(Graph* g, Node* source);
     static void CalculateShortestPathArray(Graph* g, Node* source);
+    static void CalculateShortestPathHeap(Graph* g, int sourceVertex);
+    static void CalculateShortestPathArray(Graph* g, int sourceVertex);
+
 };
 #endif
 

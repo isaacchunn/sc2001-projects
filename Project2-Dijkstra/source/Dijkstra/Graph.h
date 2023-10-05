@@ -24,10 +24,17 @@ class Graph
 		
 		//Functions
 		void SetNoOfVertices(int vertices);
-		void LoadGraph(std::string file);
-		void ExportGraph(std::string file);
-
+		void Clear();
 		void UpdateAdjacencyList();
+		//CSV
+		bool LoadGraph(std::string file);
+		bool ExportGraph(std::string file);
+		//Node addition and deletion later on
+		//Printing
+		void PrintAdjMatrix();
+		void PrintAdjList();
+
+		
 };
 
 #endif

@@ -111,6 +111,11 @@ void Dijkstra::CalculateShortestPathHeap(Graph *g , Node * source)
 #endif
 }
 
+/// <summary>
+/// Calculates the shortest path to all nodes from a source node in a graph using an array as a priority queue
+/// </summary>
+/// <param name="g">graph</param>
+/// <param name="source">source node</param>
 void Dijkstra::CalculateShortestPathArray(Graph* g, Node* source)
 {
     //Handle trivial cases
@@ -211,6 +216,28 @@ void Dijkstra::CalculateShortestPathArray(Graph* g, Node* source)
 #endif
 }
 
+/// <summary>
+/// Wrapper function that calculates the shortest path using a heap as priority queue and given a source vertex
+/// </summary>
+/// <param name="g">graph</param>
+/// <param name="sourceVertex">source vertex</param>
+void Dijkstra::CalculateShortestPathHeap(Graph* g, int sourceVertex)
+{
+    Node* source = g->nodes[sourceVertex];
+    CalculateShortestPathHeap(g, source);
+}
+
+/// <summary>
+/// Wrapper function that calculates the shortest path using an array as priority queue and given a source vertex
+/// </summary>
+/// <param name="g">graph</param>
+/// <param name="sourceVertex">source vertex</param>
+void Dijkstra::CalculateShortestPathArray(Graph* g, int sourceVertex)
+{
+    Node* source = g->nodes[sourceVertex];
+    CalculateShortestPathArray(g, source);
+}
+
 void Dijkstra::FindShortestPath(Graph * g, Node * source, Node * target, QUEUE_TYPE type)
 {
     //Trivial case checking
@@ -256,6 +283,64 @@ void Dijkstra::FindShortestPath(Graph * g, Node * source, Node * target, QUEUE_T
             cout<< " -> ";
     }
     cout << endl;
+}
+
+/// <summary>
+/// Wrapper function to find shortest path between two known vertexes
+/// </summary>
+/// <param name="g">graph</param>
+/// <param name="sourceVertex">vertex of source node</param>
+/// <param name="endVertex">vertex of target node</param>
+/// <param name="type">queue type</param>
+void Dijkstra::FindShortestPath(Graph* g, int sourceVertex, int endVertex, QUEUE_TYPE type)
+{
+    if (sourceVertex < 0 || sourceVertex > g->V || endVertex < 0 || endVertex > g->V)
+        return;
+
+    Node* source = g->nodes[sourceVertex];
+    Node* end = g->nodes[endVertex];
+    FindShortestPath(g, source, end, type);
+}
+
+/// <summary>
+/// Wrapper function to calculate the shortest path to linked nodes from a source node
+/// </summary>
+/// <param name="g">graph</param>
+/// <param name="source">source node</param>
+/// <param name="type">type</param>
+void Dijkstra::CalculateShortestPath(Graph* g, Node* source, QUEUE_TYPE type)
+{
+    switch (type)
+    {
+        case HEAP: {
+            
+            CalculateShortestPathHeap(g, source);
+            break;
+        }
+        case ARRAY:
+        {
+            CalculateShortestPathArray(g, source);
+            break;
+        }
+        case TOTAL_TYPE:
+        {
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+/// <summary>
+/// Wrapper function to calculate the shortest path to linked nodes from a source vertex
+/// </summary>
+/// <param name="g">graph</param>
+/// <param name="sourceVertex">source vertex</param>
+/// <param name="type">type</param>
+void Dijkstra::CalculateShortestPath(Graph* g, int sourceVertex, QUEUE_TYPE type)
+{
+    Node* n = g->nodes[sourceVertex];
+    CalculateShortestPath(g, n, type);
 }
 
 void Dijkstra::Debug(Graph * g, int iteration)

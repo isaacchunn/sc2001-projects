@@ -7,8 +7,6 @@
 
 using namespace std;
 
-void printGraphMatrix(Graph* g);
-void printGraphList(Graph* g);
 
 #define M INT_MAX
 
@@ -21,12 +19,15 @@ int main()
 	do
 	{
 		//Print the UI
+		cout << endl;
 		cout << "---Dijkstra Interface---" << endl;
 		cout << "1) Use Tutorial Graph" << endl;
-		cout << "2) dd" << endl;
+		cout << "2) Randomly Generate Graph" << endl;
 		cout << "3) Load Graph" << endl;
 		cout << "4) Export Graph" << endl;
-		cout << "5) Quit" << endl;
+		cout << "5) Find Shortest Path" << endl;
+		cout << "6) Dijkstra" << endl;
+		cout << "7) Quit" << endl;
 		cout << "Input choice: ";
 		cin >> choice;
 
@@ -61,11 +62,8 @@ int main()
 			//Update adjacency list
 			graph->UpdateAdjacencyList();
 			//Get input and update adj matrix
-			printGraphMatrix(graph);
-			printGraphList(graph);
-
-			//Then try print the shortest path from the soruce node to end point
-			Dijkstra::FindShortestPath(graph, s, y, QUEUE_TYPE::ARRAY);
+			graph->PrintAdjMatrix();
+			graph->PrintAdjList();
 			break;
 		}
 		case 2:
@@ -74,6 +72,13 @@ int main()
 		}
 		case 3:
 		{
+			cout << "What name is the graph called?: ";
+			std::string fileName;
+			cin >> fileName;
+			string filePath = "data/" + fileName + ".csv";
+			if(graph->LoadGraph(filePath))
+				cout << "Graph sucessfully imported from " + filePath << endl;
+	
 			break;
 		}
 		case 4:
@@ -82,92 +87,46 @@ int main()
 			std::string fileName;
 			cin >> fileName;
 			string filePath = "data/" + fileName + ".csv";
-			cout << filePath << endl;
-			graph->ExportGraph(filePath);
+			if (graph->ExportGraph(filePath))
+				cout << "Graph sucessfully exported to " + filePath << endl;
 			break;
 		}
 		case 5:
-		{
+		{	
+			int sourceVertex, endVertex, mode;
+			cout << "Input source vertex: " << endl;
+			cin >> sourceVertex;
+			cout << "Input end vertex: " << endl;
+			cin >> endVertex;
+			cout << "Input mode (0: HEAP, 1: ARRAY)";
+			cin >> mode;
+			
+
+			//Then try print the shortest path from the soruce node to end point
+			Dijkstra::FindShortestPath(graph, sourceVertex, endVertex, (QUEUE_TYPE)mode);
 			break;
+		}
+		case 6:
+		{			
+			int sourceVertex, mode;
+			cout << "Input source vertex: " << endl;
+			cin >> sourceVertex;
+			cout << "Input mode (0: HEAP, 1: ARRAY)";
+			cin >> mode;
+			Dijkstra::CalculateShortestPath(graph, sourceVertex, (QUEUE_TYPE)mode);
+			break;
+		}
+		case 7:
+		{
+
 		}
 		default:
 			break;
 		}
 
 
-	} while (choice != 5);
+	} while (choice != 7);
 	return 0;
-}
-
-/// @brief Prints the adjacency matrix of a graph
-/// @param g graph
-void printGraphMatrix(Graph* g)
-{
-	int i, j;
-
-	//Print the rows first.
-	printf("Adjacency Matrix\n");
-	//Print divider.
-	for (i = 0; i < g->V; i++)
-	{
-		printf("----------");
-	}
-	printf("\n|  \t|");
-	for (i = 0; i < g->V; i++)
-	{
-		printf("\t%d", i + 1);
-	}
-	printf("  |\n");
-	//Print divider.
-	for (i = 0; i < g->V; i++)
-	{
-		printf("----------");
-	}
-	printf("\n");
-	for (i = 0; i < g->V; i++) {
-		//Print divider.
-		printf("| %d\t|", i + 1);
-		for (j = 0; j < g->V; j++)
-		{
-			if (g->adjMatrix[i][j] == INT_MAX)
-				printf("\t%c", 236);
-			else
-				printf("\t%d", g->adjMatrix[i][j]);
-		}
-
-		printf("  |\n");
-	}
-	//Print divider.
-	for (i = 0; i < g->V; i++)
-	{
-		printf("----------");
-	}
-	printf("\n");
-}
-
-/// @brief Prints the adjacency list of a graph
-/// @param g graph
-void printGraphList(Graph* g) {
-
-	//Variable declaration
-	int i;
-	ListNode* temp;
-	//Sanity check
-	//Print at each index.
-	cout << "Legend: ConnectedNode:Cost" << endl;
-	for (i = 0; i < g->V; i++)
-	{
-		printf("%d:\t", i + 1);
-		temp = g->adjList[i];
-		while (temp != NULL) {
-			cout << temp->node->GetName() << ":" << temp->cost;
-			if (temp->next != NULL)
-				cout << " -> ";
-			temp = temp->next;
-		}
-		cout << endl;
-	}
-
 }
 
 
