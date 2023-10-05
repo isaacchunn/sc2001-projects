@@ -117,7 +117,7 @@ int main()
 			cin >> endVertex;
 			cout << "Input mode (0: HEAP, 1: ARRAY): ";
 			cin >> mode;
-			//Then try print the shortest path from the soruce node to end point
+			//Then try print the shortest path from the source node to end point
 			Dijkstra::FindShortestPath(graph, sourceVertex, endVertex, (QUEUE_TYPE)mode);
 			break;
 		}
@@ -128,7 +128,12 @@ int main()
 			cin >> sourceVertex;
 			cout << "Input mode (0: HEAP, 1: ARRAY): ";
 			cin >> mode;
+
+			Timer::Start();
 			Dijkstra::CalculateShortestPath(graph, sourceVertex, (QUEUE_TYPE)mode);
+			Timer::Stop();
+			Timer::PrintDuration();
+
 			break;
 		}
 		case 8:
