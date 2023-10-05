@@ -4,7 +4,7 @@
 #include "Graph.h"
 #include "Node.h"
 #include <iostream>
-#include "../PriorityQueue.h"
+#include "../PriorityQueue/PriorityQueue.h"
 
 class Dijkstra
 {

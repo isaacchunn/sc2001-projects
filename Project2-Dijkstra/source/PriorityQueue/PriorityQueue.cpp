@@ -5,7 +5,7 @@ PriorityQueue::PriorityQueue()
 	heap.SetHeapType(MAXIMISING);
 }
 
-PriorityQueue::PriorityQueue(HEAP_TYPE heapType)
+PriorityQueue::PriorityQueue(TYPE heapType)
 {
 	//Set our heap type
 	heap.SetHeapType(heapType);

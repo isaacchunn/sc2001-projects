@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <iostream>
-#include "Graph.h"
-#include "Node.h"
-#include "ListNode.h"
-#include "Dijkstra.h"
+#include "Dijkstra/Graph.h"
+#include "Dijkstra/Node.h"
+#include "Dijkstra/ListNode.h"
+#include "Dijkstra/Dijkstra.h"
 
 using namespace std;
 

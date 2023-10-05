@@ -2,8 +2,8 @@
 #define PRIORITY_QUEUE_H
 
 //Wrapper class for our heap that contains many public functions
-#include "Heap/heap.h"
-#include "Dijkstra/Node.h"
+#include "../Heap/heap.h"
+#include "../Dijkstra/Node.h"
 
 class PriorityQueue
 {
@@ -11,7 +11,7 @@ class PriorityQueue
 		Heap<Node*> heap;
 	public:
 		PriorityQueue();
-		PriorityQueue(HEAP_TYPE heapType);
+		PriorityQueue(TYPE heapType);
 		~PriorityQueue();
 
 		//Typical queue functions

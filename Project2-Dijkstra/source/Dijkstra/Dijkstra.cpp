@@ -17,7 +17,7 @@ void Dijkstra::CalculateShortestPath(Graph *g , Node * source)
     
     //Initialize new priority queue
     //Priority queue in terms of int distances, we will utilise the map
-    PriorityQueue pq = PriorityQueue(HEAP_TYPE::MINIMISING);
+    PriorityQueue pq = PriorityQueue(TYPE::MINIMISING);
 
     //Clear our previous vectors
     pi.clear();

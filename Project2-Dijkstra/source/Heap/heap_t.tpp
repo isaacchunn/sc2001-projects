@@ -14,7 +14,7 @@ Heap<T>::Heap()
 }
 
 template<class T>
-Heap<T>::Heap(HEAP_TYPE type, string name)
+Heap<T>::Heap(TYPE type, string name)
 	: heapType(type),
 	last_ptr(0),
 	heapName(name)
@@ -28,13 +28,13 @@ Heap<T>::~Heap()
 }
 
 template<class T>
-void Heap<T>::SetHeapType(HEAP_TYPE type)
+void Heap<T>::SetHeapType(TYPE type)
 {
 	this->heapType = type;
 }
 
 template<class T>
-HEAP_TYPE Heap<T>::GetHeapType()
+TYPE Heap<T>::GetHeapType()
 {
 	return this->heapType;
 }

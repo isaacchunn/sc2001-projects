@@ -6,10 +6,9 @@
 #include <string>
 #include "../Dijkstra/Node.h"
 
-
 using namespace std; 
 
-enum HEAP_TYPE
+enum TYPE
 {
     MAXIMISING,
     MINIMISING,
@@ -24,7 +23,7 @@ class Heap
         //Have the heap store a vector of elements
         std::vector<T> elements;
         //Store the type of heap
-        HEAP_TYPE heapType;
+        TYPE heapType;
         //Store last pointer to present the "sorted result"
         int last_ptr;
         //Store the name of this heap for identification
@@ -35,13 +34,13 @@ class Heap
     public:
         //Constructors, Destructors
         Heap();
-        Heap(HEAP_TYPE type, string name);
+        Heap(TYPE type, string name);
         ~Heap();
         
         //Accessors and Mutators
-        void SetHeapType(HEAP_TYPE type);
+        void SetHeapType(TYPE type);
         void SetName(string name);
-        HEAP_TYPE GetHeapType();
+        TYPE GetHeapType();
         string GetName();
         vector<T> GetElements();
         
