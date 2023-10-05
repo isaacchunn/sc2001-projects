@@ -1,6 +1,9 @@
 //#include "heap.h"
 #include <string>
 #include <iostream>
+
+//#define DEBUG
+
 using namespace std;
 
 template<class T>
@@ -8,7 +11,6 @@ Heap<T>::Heap()
 	: heapType(MAXIMISING),
 	last_ptr(0),
 	heapName("Default")
-
 {
 
 }
@@ -129,7 +131,9 @@ bool Heap<T>::ConstructHeap()
 	//Check if the size of vector isnt 0, or has already constructed
 	if (elements.size() == 0)
 	{
+	#ifdef DEBUG
 		std::cout << "===Construct Heap===\n There are no elements to construct a heap!" << std::endl;
+	#endif
 		return false;
 	}
 	//Reset last_ptr to elements.size
@@ -188,7 +192,9 @@ void Heap<T>::Delete()
 	//Return if nothing to Delete
 	if (this->elements.size() == 0)
 	{
+	#ifdef DEBUG
 		std::cout << "===Delete===\n There are no elements to delete!" << std::endl;
+	#endif
 		return;
 	}
 
@@ -213,8 +219,10 @@ void Heap<T>::Delete(T element)
 {
 	//Return if nothing to Delete
 	if (this->elements.size() == 0)
-	{
+	{	
+	#ifdef DEBUG
 		std::cout << "===Delete===\n There are no elements to delete!" << std::endl;
+	#endif
 		return;
 	}
 
@@ -247,7 +255,9 @@ bool Heap<T>::HeapSort(vector<T>& result)
 	int size = (int)this->elements.size();
 	if (size == 0)
 	{
+	#ifdef DEBUG
 		std::cout << "===Heap Sort===\n There are no elements to sort!" << std::endl;
+	#endif
 		return false;
 	}
 	std::cout << "===Heap Sort===" << std::endl;

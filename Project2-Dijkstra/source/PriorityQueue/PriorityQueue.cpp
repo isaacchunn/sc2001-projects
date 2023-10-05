@@ -23,7 +23,11 @@ bool PriorityQueue::Insert(Node* n)
 {
 	if (n == NULL)
 		return false;
-    cout << "Inserting vertex " << n->GetName() << endl;
+
+#ifdef DEBUG
+    cout << "Inserting vertex " << n->GetName() << " into the queue." << endl;
+#endif
+
 	heap.Insert(n);
 	return true;
 }
@@ -48,13 +52,14 @@ bool PriorityQueue::Delete(Node* n)
 Node* PriorityQueue::Top()
 {
 	//If the heap is empty
-	if (isEmpty())
+	if (IsEmpty())
 	{
+#ifdef DEBUG
 		cout << "Empty heap" << endl;
+#endif
 		return NULL;
 	}
 	
-
 	//Else we can get the heap's first index and call delete
 	Node* n = heap.GetElements()[0];
 	heap.Delete();
@@ -62,6 +67,9 @@ Node* PriorityQueue::Top()
 	return n;
 }
 
+/// <summary>
+/// Function to print the queue=
+/// </summary>
 void PriorityQueue::PrintQueue()
 {
 	heap.PrintHeap();
@@ -69,7 +77,11 @@ void PriorityQueue::PrintQueue()
 	heap.PrintElements();
 }
 
-bool PriorityQueue::isEmpty()
+/// <summary>
+/// Checks if the queue is empty
+/// </summary>
+/// <returns></returns>
+bool PriorityQueue::IsEmpty()
 {
 	//return heap size is 0
 	return heap.GetElements().size() == 0;

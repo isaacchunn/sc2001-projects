@@ -76,7 +76,7 @@ int main()
 	printGraphMatrix(graph);
 
 	//Then try print the shortest path from the soruce node to end point
-	Dijkstra::FindShortestPath(graph, x, y);
+	Dijkstra::FindShortestPath(graph, s, y, QUEUE_TYPE::ARRAY);
 
 	return 0;
 }
@@ -110,7 +110,13 @@ void printGraphMatrix(Graph* g)
 		//Print divider.
 		printf("| %d\t|", i + 1);
 		for (j = 0; j < g->V; j++)
-			printf("\t%d", g->adjMatrix[i][j]);
+		{
+			if(g->adjMatrix[i][j] == INT_MAX)
+				printf("\t%c",236);
+			else
+				printf("\t%d", g->adjMatrix[i][j]);
+		}
+			
 		printf("  |\n");
 	}
 	//Print divider.

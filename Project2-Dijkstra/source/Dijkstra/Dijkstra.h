@@ -5,16 +5,26 @@
 #include "Node.h"
 #include <iostream>
 #include "../PriorityQueue/PriorityQueue.h"
+#include "../PriorityQueue/PriorityQueueArray.h"
+
+//#define DEBUGPRINT
+
+/// <summary>
+/// Enum to determine between which type of priority queue to use
+/// </summary>
+enum QUEUE_TYPE
+{
+    HEAP,
+    ARRAY,
+    TOTAL_TYPE
+};
 
 class Dijkstra
 {
 public:
 	//Simple wrapper that contains a static method
-	static void CalculateShortestPath(Graph * g, Node * source);
-    static void FindShortestPath(Graph * g, Node * source, Node* end);    
+    static void FindShortestPath(Graph * g, Node * source, Node* end, QUEUE_TYPE type);    
 private:
-    //Vector that stores the distance of each vertex to source node
-	//static vector<int> d;
     //Vector that stores the predecessor "node" of the associated shortest path
 	static vector<Node*> pi;
     //A vector that indicates if this node is already been accounted for
@@ -24,6 +34,10 @@ private:
     
     //Debugging function
     static void Debug(Graph * g, int iteration);
+
+    //Graph function to calculate shortest path
+    static void CalculateShortestPathHeap(Graph* g, Node* source);
+    static void CalculateShortestPathArray(Graph* g, Node* source);
 };
 #endif
 
