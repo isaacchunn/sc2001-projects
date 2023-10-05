@@ -4,11 +4,11 @@
 #include "Dijkstra/Node.h"
 #include "Dijkstra/ListNode.h"
 #include "Dijkstra/Dijkstra.h"
+#include "Misc/Timer.h"
 
 using namespace std;
 
 #define M INT_MAX
-
 
 int main()
 {
@@ -25,9 +25,11 @@ int main()
 		cout << "2) Randomly Generate Graph" << endl;
 		cout << "3) Load Graph" << endl;
 		cout << "4) Export Graph" << endl;
-		cout << "5) Find Shortest Path" << endl;
-		cout << "6) Dijkstra" << endl;
-		cout << "7) Quit" << endl;
+		cout << "5) Print Graph Details" << endl;
+		cout << "6) Find Shortest Path" << endl;
+		cout << "7) Dijkstra" << endl;
+		cout << "8) Clear Console" << endl;
+		cout << "9) Quit" << endl;
 		cout << "Input choice: ";
 		cin >> choice;
 
@@ -69,6 +71,14 @@ int main()
 		case 2:
 		{
 			//TODO
+			int n, density;
+			cout << "Enter number of nodes: ";
+			cin >> n;
+			cout << "Enter density: ";
+			cin >> density;
+			graph->GenerateRandomGraph(n, density);
+			graph->PrintAdjMatrix();
+			graph->PrintAdjList();
 			break;
 		}
 		case 3:
@@ -89,10 +99,16 @@ int main()
 			cin >> fileName;
 			string filePath = "data/" + fileName + ".csv";
 			if (graph->ExportGraph(filePath))
-				cout << "Graph sucessfully exported to " + filePath << endl;
+				cout << "Graph successfully exported to " + filePath << endl;
 			break;
 		}
 		case 5:
+		{
+			graph->PrintAdjMatrix();
+			graph->PrintAdjList();
+			break;
+		}
+		case 6:
 		{
 			int sourceVertex, endVertex, mode;
 			cout << "Input source vertex: " << endl;
@@ -101,24 +117,23 @@ int main()
 			cin >> endVertex;
 			cout << "Input mode (0: HEAP, 1: ARRAY): ";
 			cin >> mode;
-
-
 			//Then try print the shortest path from the soruce node to end point
 			Dijkstra::FindShortestPath(graph, sourceVertex, endVertex, (QUEUE_TYPE)mode);
 			break;
 		}
-		case 6:
+		case 7:
 		{
 			int sourceVertex, mode;
 			cout << "Input source vertex: " << endl;
 			cin >> sourceVertex;
-			cout << "Input mode (0: HEAP, 1: ARRAY)";
+			cout << "Input mode (0: HEAP, 1: ARRAY): ";
 			cin >> mode;
 			Dijkstra::CalculateShortestPath(graph, sourceVertex, (QUEUE_TYPE)mode);
 			break;
 		}
-		case 7:
+		case 8:
 		{
+			system("cls");
 			break;
 		}
 		default:
@@ -127,7 +142,7 @@ int main()
 		}
 		}
 
-	} while (choice != 7);
+	} while (choice != 9);
 	return 0;
 }
 

@@ -1,9 +1,14 @@
 #include "Graph.h"
 
 Graph::Graph()
-	:V(0), E(0)
+	:V(0), E(0), type(GRAPH_TYPE::DIRECTIONAL)
 {
 }
+Graph::Graph(GRAPH_TYPE type)
+	:V(0), E(0), type(type)
+{
+}
+
 
 Graph::~Graph()
 {
@@ -91,7 +96,7 @@ bool Graph::LoadGraph(std::string file)
 	}
 
 	//Loop through our edges and update the weights accordingly
-	for (int i = 0; i < data.size(); i++)
+	for (int i = 0; i < (int)data.size(); i++)
 	{
 		//first is source
 		//second is target
@@ -102,6 +107,9 @@ bool Graph::LoadGraph(std::string file)
 		//Update the adj matrix
 		//If bidirectional change here later.
 		adjMatrix[source - 1][neighbour - 1] = weight;
+
+		if (type == BIDIRECTIONAL) //both the weights of each other are same
+			adjMatrix[neighbour - 1][source - 1] = weight;
 	}
 
 	//Once populated, update our adj list
@@ -124,7 +132,7 @@ bool Graph::ExportGraph(std::string file)
 {
 	vector<string> data;
 	//Use our adjacency list to generate outputs as its faster
-	for (int i = 0; i < adjList.size(); i++)
+	for (int i = 0; i < this->V; i++)
 	{
 		//If null entry go next
 		if (adjList[i] == NULL)
@@ -150,11 +158,14 @@ bool Graph::ExportGraph(std::string file)
 /// </summary>
 void Graph::PrintAdjMatrix()
 {
+	if (this->V == 0)
+	{
+		cout << "Graph is empty. No adj matrix." << endl;
+		return;
+	}
 	int i, j;
 	//Print the rows first.
 	printf("Adjacency Matrix\n");
-	if (this->V == 0)
-		return;
 
 	//Print divider.
 	for (i = 0; i < this->V; i++)
@@ -199,11 +210,18 @@ void Graph::PrintAdjMatrix()
 /// </summary>
 void Graph::PrintAdjList()
 {
+	if (this->V == 0)
+	{
+		cout << "Graph is empty. No adj list." << endl;
+		return;
+	}
+
 	//Variable declaration
 	int i;
 	ListNode* temp;
 	//Sanity check
 	//Print at each index.
+	cout << "Adjacency List" << endl;
 	cout << "Legend: ConnectedNode:Cost" << endl;
 	for (i = 0; i < this->V; i++)
 	{
@@ -219,6 +237,72 @@ void Graph::PrintAdjList()
 	}
 }
 
+/// <summary>
+/// Generates a random graph with a fixed number of nodes and density
+/// </summary>
+/// <param name="numberOfNodes">number of nodes</param>
+/// <param name="density">number of edges a node can connect to</param>
+void Graph::GenerateRandomGraph(int numberOfNodes, int density)
+{
+	//Initialize time
+	srand(time(0));
+	//Clear any previous graph if not done yet
+	Clear();
+	//Update the number of nodes in our vertices
+	this->V = numberOfNodes;
+
+	//Resize our adj list and matrix
+	adjMatrix.resize(this->V);
+	for (int i = 0; i < this->V; i++)
+	{
+		//Initialize all to max to show the links
+		adjMatrix[i] = vector<int>(this->V, INT_MAX);
+		//Update our map
+		//Create a new node and store into nodes
+		Node* newNode = new Node(i, 0, to_string(i + 1));
+		nodes[i] = newNode;
+	}
+	adjList.resize(this->V);
+
+	//We dont need to add connections if the V is <=1
+	if (this->V <= 1)
+		return;
+
+	//Iteratively just add nodes
+	//Then randomly generate up to n
+	for (int i = 0; i < this->V; i++)
+	{
+		////If its below 1, then the only thing that can connect is between the first 2 vertices
+		//if (i <= 1)
+		//{		
+		//	//Generate a weight between vertices
+		//	int weight = (rand() % (this->V * 2)) + 1;
+		//	adjMatrix[0][1] = weight;
+		//	//if its bidirectional, add the other side as well
+		//	if (type == BIDIRECTIONAL)
+		//		adjMatrix[1][0] = weight;
+		//}
+		//else
+		//{
+			//For loop up to density and connect to previously connected graphs
+		for (int j = 0; j < density; j++)
+		{
+			//Generate a weight between vertices
+			int weight = (rand() % (this->V * 2)) + 1;
+			int randVertex = (rand() % this->V);
+			cout << "Adding edge between " << i << " and " << randVertex << " of weight: " << weight << endl;
+			//Then link this vertex to rand vertex
+			adjMatrix[i][randVertex] = weight;
+			if (type == BIDIRECTIONAL)
+				adjMatrix[randVertex][i] = weight;
+		}
+		//}
+	}
+	
+	//After this is done, calculate our adj list
+	UpdateAdjacencyList();
+}
+
 
 /// <summary>
 /// Populates our adjacency list based on our adjacency matrix
@@ -226,9 +310,9 @@ void Graph::PrintAdjList()
 void Graph::UpdateAdjacencyList()
 {
 	//Loop through the adjMatrix
-	for (int i = 0; i < adjMatrix.size(); i++)
+	for (int i = 0; i < this->V; i++)
 	{
-		for (int j = 0; j < adjMatrix.size(); j++)
+		for (int j = 0; j < this->V; j++)
 		{
 			//Ignore weights to itself
 			if (i == j)

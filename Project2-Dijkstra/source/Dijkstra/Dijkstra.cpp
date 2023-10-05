@@ -105,9 +105,6 @@ void Dijkstra::CalculateShortestPathHeap(Graph *g , Node * source)
             }
             curr = curr->next;
         }
-
-
- 
     }
 #ifdef DEBUGPRINT
     Debug(g,iteration++);

@@ -16,7 +16,7 @@ enum QUEUE_TYPE
 {
     HEAP,
     ARRAY,
-    TOTAL_TYPE
+    TOTAL_QUEUETYPE
 };
 
 class Dijkstra
