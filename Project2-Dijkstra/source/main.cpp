@@ -13,7 +13,8 @@
 //#define DEBUG 
 
 int main()
-{
+{	//Initialize time
+	srand(time(NULL));
 	//Create a graph
 	Graph* graph = new Graph();
 
@@ -71,9 +72,6 @@ int main()
 			//Get input and update adj matrix
 			graph->PrintAdjMatrix();
 			graph->PrintAdjList();
-			
-
-
 			break;
 		}
 		case 2:
@@ -178,6 +176,8 @@ int main()
 			//Make directory
 			if (!std::filesystem::exists(folderPath + folderName))
 				std::filesystem::create_directory(folderPath + folderName + "/");
+			if (!std::filesystem::exists(folderPath + folderName + "/Graph"))
+				std::filesystem::create_directory(folderPath + folderName + "/Graph/");
 
 			//Trivial checking
 			if (vertices < 0 || density < 0)
@@ -195,7 +195,7 @@ int main()
 				//Generate a graph based on this density and node number (i)
 				graph->GenerateRandomGraph(i, density);
 				//Export our graph so we can track and print in python~
-				graph->ExportGraph(folderPath + folderName + "/graph" + to_string(graphNumber) + ".csv");
+				graph->ExportGraph(folderPath + folderName + "/Graph/graph" + to_string(graphNumber) + ".csv");
 
 #ifdef DEBUG
 				graph->PrintAdjMatrix();
@@ -247,6 +247,8 @@ int main()
 			//Make directory
 			if (!std::filesystem::exists(folderPath + folderName))
 				std::filesystem::create_directory(folderPath + folderName + "/");
+			if (!std::filesystem::exists(folderPath + folderName + "/Graph"))
+				std::filesystem::create_directory(folderPath + folderName + "/Graph/");
 
 			//Trivial checking
 			if (vertices < 0 || density < 0)
@@ -264,7 +266,7 @@ int main()
 				//Generate a graph based on this density and node number (i)
 				graph->GenerateRandomGraph(vertices, i);
 				//Export our graph so we can track and print in python~
-				graph->ExportGraph(folderPath + folderName + "/graph" + to_string(graphNumber) + ".csv");
+				graph->ExportGraph(folderPath + folderName + "/graph/Graph" + to_string(graphNumber) + ".csv");
 
 #ifdef DEBUG
 				graph->PrintAdjMatrix();
@@ -314,6 +316,7 @@ int main()
 			if (!std::filesystem::exists(folderPath + folderName))
 				std::filesystem::create_directory(folderPath + folderName + "/");
 
+
 			//Trivial checking
 			if (vertices < 0 || density < 0)
 			{
@@ -358,7 +361,7 @@ int main()
 		}
 		}
 
-	} while (choice != 11);
+	} while (choice != 12);
 	return 0;
 }
 

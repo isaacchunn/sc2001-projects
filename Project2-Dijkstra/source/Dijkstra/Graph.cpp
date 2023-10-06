@@ -248,9 +248,6 @@ void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 	//Error handling to limit density to number of nodes
 	if (density > numberOfNodes)
 		density = numberOfNodes;
-
-	//Initialize time
-	srand(time(0));
 	//Clear any previous graph if not done yet
 	Clear();
 	//Update the number of nodes in our vertices
