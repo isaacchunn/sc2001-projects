@@ -28,6 +28,9 @@ public:
     static void CalculateShortestPath(Graph* g, Node * source, QUEUE_TYPE type);
     static void CalculateShortestPath(Graph* g, int sourceVertex, QUEUE_TYPE type);
 
+    //Helper function to print number of unvisited nodes
+    static void PrintUnvisitedNodes();
+
 private:
     //Vector that stores the predecessor "node" of the associated shortest path
 	static vector<Node*> pi;

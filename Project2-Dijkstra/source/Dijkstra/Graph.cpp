@@ -244,15 +244,20 @@ void Graph::PrintAdjList()
 /// <param name="density">number of edges a node can connect to</param>
 void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 {
-
+	//Max density is n - 1
 	//Error handling to limit density to number of nodes
-	if (density > numberOfNodes)
-		density = numberOfNodes;
+	if (density >= numberOfNodes)
+		density = numberOfNodes - 1;
+
 	//Clear any previous graph if not done yet
 	Clear();
 	//Update the number of nodes in our vertices
 	this->V = numberOfNodes;
 
+	//Use an unordered map to store edges for each node to count the edges
+	unordered_map<int, int> edges;
+	//Some vector to keep track of remaining vertexes left
+	vector<int> vertexesLeft = vector<int>(this->V, 0);
 	//Resize our adj list and matrix
 	adjMatrix.resize(this->V);
 	for (int i = 0; i < this->V; i++)
@@ -261,10 +266,15 @@ void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 		adjMatrix[i] = vector<int>(this->V, INT_MAX);
 		//Then update the vector to be 0 on the diagonals
 		adjMatrix[i][i] = 0;
-		//Update our map
+
+		//Update our edge and node map
+		edges[i] = 0; //<0,0>
+
 		//Create a new node and store into nodes
 		Node* newNode = new Node(i, 0, to_string(i + 1));
 		nodes[i] = newNode;
+
+		vertexesLeft[i] = i;
 	}
 	adjList.resize(this->V);
 
@@ -272,42 +282,82 @@ void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 	if (this->V <= 1)
 		return;
 
-	//Iteratively just add nodes
-	//Then randomly generate up to n
-	for (int i = 0; i < this->V; i++)
+	//Two pass generation to cover up any remaining gaps by earlier as there seems to be bias to earlier nodes?
+	for (int y = 0; y < 2; y++)
 	{
-		//If its below 1, then the only thing that can connect is between the first 2 vertices
-		if (i <= 1)
+		//Save second iteration if vertexes left are all zero
+		if (vertexesLeft.size() == 0)
+			break;
+
+		//Then randomly generate up to n
+		for (int i = 0; i < this->V; i++)
 		{
-			//Generate a weight between vertices
-			int weight = (rand() % (this->V * 2)) + 1;
-			adjMatrix[0][1] = weight;
-			//if its bidirectional, add the other side as well
-			if (type == BIDIRECTIONAL)
-				adjMatrix[1][0] = weight;
-		}
-		else
-		{
+			//If current node has reached max, we can skip the generation
+			if (edges[i] == density)
+				continue;
+
+			//There are more nodes than density, so just for loop and try
 			//For loop up to density and connect to previously connected graphs
-			for (int j = 0; j < density; j++)
+			for (int j = edges[i]; j < density; j++)
 			{
-				if (j > i)
-				{
-					//If density is more than current node, we can stop here
+				//If there are no more vertexes left...
+				if (vertexesLeft.size() == 0)
 					break;
-				}
+
 				//Generate a weight between vertices
 				int weight = (rand() % (this->V * 2)) + 1;
-				int randVertex = (rand() % i);
-				while (randVertex == i) //reject overriding weights to itself
+				int randVertex = (rand() % vertexesLeft.size());
+				int actualVertex = vertexesLeft[randVertex];
+				while (actualVertex == i || adjMatrix[i][actualVertex] != INT_MAX) //reject overriding weights to itself or adding same weights
 				{
-					randVertex = (rand() % i);
+					//if only one vertex, nothing else we can do, just return out
+					if (vertexesLeft.size() <= 1)
+						break;
+					randVertex = (rand() % vertexesLeft.size());
+					actualVertex = vertexesLeft[randVertex];
 				}
 				//cout << "Adding edge between " << i << " and " << randVertex << " of weight: " << weight << endl;
-				//Then link this vertex to rand vertex
-				adjMatrix[i][randVertex] = weight;
+				//Then link this vertex to actual vertex
+				adjMatrix[i][actualVertex] = weight;
+				//increase edge at this place
+				edges[i]++;
+
+				//Check if edges has reached density, and remove it from vertexes left
+				if (edges[i] >= density)
+				{
+					int z;
+					//Remove this the index in the vertexesLeft
+					for (z = 0; z < vertexesLeft.size(); z++)
+					{
+						if (vertexesLeft[z] == i)
+							break;
+					}
+					//Remove it 
+					if (z != vertexesLeft.size())
+						vertexesLeft.erase(vertexesLeft.begin() + z);
+				}
+
 				if (type == BIDIRECTIONAL)
-					adjMatrix[randVertex][i] = weight;
+				{
+					adjMatrix[actualVertex][i] = weight;
+					edges[actualVertex]++;
+
+					if (edges[actualVertex] >= density)
+					{
+						//Check if edges is there, and remove it from the vertexesleft
+						int z;
+						//Remove this the index in the vertexesLeft
+						for (z = 0; z < vertexesLeft.size(); z++)
+						{
+							if (vertexesLeft[z] == actualVertex)
+								break;
+						}
+						//Remove it 
+						if (z != vertexesLeft.size())
+							vertexesLeft.erase(vertexesLeft.begin() + z);
+					}
+				}
+				this->E++;
 			}
 		}
 	}

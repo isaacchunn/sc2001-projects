@@ -22,17 +22,7 @@ void Dijkstra::CalculateShortestPathHeap(Graph *g , Node * source)
     //Initialize new priority queue
     //Priority queue in terms of int distances, we will utilise the map
     PriorityQueue pq = PriorityQueue(TYPE::MINIMISING);
-
-    //Clear our previous vectors
-    pi.clear();
-    S.clear();
-    pathCount.clear();
-    
-    //Resize our containers to the new graph's vertices
-    pi.resize(g->V);
-    S.resize(g->V);
-    pathCount.resize(g->V);
-    
+ 
     //For each vertice in graph (assumed to be in ascending order)
     for(int v = 0; v < g->V; v++)
     {
@@ -127,16 +117,6 @@ void Dijkstra::CalculateShortestPathArray(Graph* g, Node* source)
     //Initialize new priority queue
     //Priority queue in terms of int distances, we will utilise the map
     PriorityQueueArray pq = PriorityQueueArray(TYPE::MINIMISING);
-
-    //Clear our previous vectors
-    pi.clear();
-    S.clear();
-    pathCount.clear();
-
-    //Resize our containers to the new graph's vertices
-    pi.resize(g->V);
-    S.resize(g->V);
-    pathCount.resize(g->V);
 
     //For each vertice in graph (assumed to be in ascending order)
     for (int v = 0; v < g->V; v++)
@@ -248,6 +228,17 @@ void Dijkstra::FindShortestPath(Graph * g, Node * source, Node * target, QUEUE_T
         cout << "Null pointer exception in finding shortest path" << endl;
         return;
     }
+
+    //Clear our previous vectors
+    pi.clear();
+    S.clear();
+    pathCount.clear();
+
+    //Resize our containers to the new graph's vertices
+    pi.resize(g->V);
+    S.resize(g->V);
+    pathCount.resize(g->V);
+
     //Calculate our shortest paths from the source node given
     if (type == QUEUE_TYPE::HEAP)
         CalculateShortestPathHeap(g, source);
@@ -312,6 +303,17 @@ void Dijkstra::FindShortestPath(Graph* g, int sourceVertex, int endVertex, QUEUE
 /// <param name="type">type</param>
 void Dijkstra::CalculateShortestPath(Graph* g, Node* source, QUEUE_TYPE type)
 {
+    //DO it here so it does not affect time to clear our vectorsd
+    //Clear our previous vectors
+    pi.clear();
+    S.clear();
+    pathCount.clear();
+
+    //Resize our containers to the new graph's vertices
+    pi.resize(g->V);
+    S.resize(g->V);
+    pathCount.resize(g->V);
+
     switch (type)
     {
         case HEAP: {
@@ -343,6 +345,25 @@ void Dijkstra::CalculateShortestPath(Graph* g, int sourceVertex, QUEUE_TYPE type
 {
     Node* n = g->nodes[sourceVertex];
     CalculateShortestPath(g, n, type);
+}
+
+/// <summary>
+/// Function that returns the number of visited and unvisited nodes
+/// </summary>
+void Dijkstra::PrintUnvisitedNodes()
+{
+    std::string unvisitedNodes;
+    int unvisited = 0;
+    for (int i = 0; i < (int)S.size(); i++)
+    {
+        if (S[i] == 0)
+        {
+            unvisited++;
+            unvisitedNodes += to_string(i) + ", ";
+        }   
+    }
+    cout << "Visited Nodes: " << S.size() - unvisited << ", Unvisited: " << unvisited << endl;
+    cout << unvisitedNodes << endl;
 }
 
 void Dijkstra::Debug(Graph * g, int iteration)
