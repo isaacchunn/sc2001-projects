@@ -10,6 +10,7 @@
 #define M INT_MAX
 #define MAX_VERTICE 1000
 #define MAX_DENSITY 1000
+#define AVG_SAMPLES 10
 //#define DEBUG 
 
 int main()
@@ -143,10 +144,15 @@ int main()
 			cout << "Input mode (0: HEAP, 1: ARRAY): ";
 			cin >> mode;
 
-			Timer::Start();
-			Dijkstra::CalculateShortestPath(graph, sourceVertex, (QUEUE_TYPE)mode);
-			Timer::Stop();
-			Timer::PrintDuration();
+			long sumTime = 0;
+			for (int i = 0; i < AVG_SAMPLES; i++)
+			{
+				Dijkstra::CalculateShortestPath(graph, sourceVertex, (QUEUE_TYPE)mode);
+				sumTime += Timer::GetDuration().count();
+				std::cout << " Time taken: " << Timer::GetDuration().count() << " microseconds" << std::endl;
+			}
+			std::cout << "Average Time taken: " << sumTime / AVG_SAMPLES << " microseconds" << std::endl;
+
 
 			break;
 		}
@@ -204,13 +210,18 @@ int main()
 				graph->PrintAdjMatrix();
 				graph->PrintAdjList();
 #endif
-				//Then start from the first vertex 0
-				Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
+				long sumTime = 0;
+				for (int j = 0; j < AVG_SAMPLES; j++)
+				{				
+					//Then start from the first vertex 0
+					Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
+					sumTime += Timer::GetDuration().count();
+					//std::cout << " Time taken: " << Timer::GetDuration().count() << " microseconds" << std::endl;
+				}
 				cout << "Iteration: " << i + 1 << "|";
-				Timer::PrintDuration();
-
+				std::cout << " Average Time taken: " << sumTime / AVG_SAMPLES << " microseconds" << std::endl;
 				//Then append the time taken
-				data += to_string(Timer::GetDuration().count());
+				data += to_string(sumTime / AVG_SAMPLES);
 				stringData.push_back(data);
 
 				//Increment graph Number
@@ -277,12 +288,18 @@ int main()
 				graph->PrintAdjMatrix();
 				graph->PrintAdjList();
 #endif
-				Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
+				long sumTime = 0;
+				for (int j = 0; j < AVG_SAMPLES; j++)
+				{
+					//Then start from the first vertex 0
+					Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
+					sumTime += Timer::GetDuration().count();
+				}
 				cout << "Iteration: " << i + 1 << "|";
-				Timer::PrintDuration();
-
+				//Timer::PrintDuration();
+				std::cout << " Time taken: " << sumTime / AVG_SAMPLES << " microseconds" << std::endl;
 				//Then append the time taken
-				data += to_string(Timer::GetDuration().count());
+				data += to_string(sumTime / AVG_SAMPLES);
 				stringData.push_back(data);
 
 				//Increment graph Number
