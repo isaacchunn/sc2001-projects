@@ -293,7 +293,7 @@ void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 		for (int i = 0; i < this->V; i++)
 		{
 			//If current node has reached max, we can skip the generation
-			if (edges[i] == density)
+			if (edges[i] == density && type == BIDIRECTIONAL)
 				continue;
 
 			//There are more nodes than density, so just for loop and try
@@ -313,17 +313,18 @@ void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 					//if only one vertex, nothing else we can do, just return out
 					if (vertexesLeft.size() <= 1)
 						break;
+
 					randVertex = (rand() % vertexesLeft.size());
 					actualVertex = vertexesLeft[randVertex];
 				}
-				//cout << "Adding edge between " << i << " and " << randVertex << " of weight: " << weight << endl;
+				//cout << "Adding edge between " << i << " and " << actualVertex << " of weight: " << weight << endl;
 				//Then link this vertex to actual vertex
 				adjMatrix[i][actualVertex] = weight;
 				//increase edge at this place
 				edges[i]++;
 
 				//Check if edges has reached density, and remove it from vertexes left
-				if (edges[i] >= density)
+				if (edges[i] >= density && type == BIDIRECTIONAL)
 				{
 					int z;
 					//Remove this the index in the vertexesLeft
