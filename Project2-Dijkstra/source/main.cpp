@@ -198,7 +198,7 @@ int main()
 				//Generate a graph based on this density and node number (i)
 				graph->GenerateRandomGraph(i, density);
 				//Export our graph so we can track and print in python~
-				graph->ExportGraph(folderPath + folderName + "/Graph/graph" + to_string(graphNumber) + ".csv");
+				//graph->ExportGraph(folderPath + folderName + "/Graph/graph" + to_string(graphNumber) + ".csv");
 
 #ifdef DEBUG
 				graph->PrintAdjMatrix();
@@ -270,7 +270,7 @@ int main()
 				//Generate a graph based on this density and node number (i)
 				graph->GenerateRandomGraph(vertices, i);
 				//Export our graph so we can track and print in python~
-				graph->ExportGraph(folderPath + folderName + "/graph/Graph" + to_string(graphNumber) + ".csv");
+				//graph->ExportGraph(folderPath + folderName + "/graph/Graph" + to_string(graphNumber) + ".csv");
 
 #ifdef DEBUG
 				graph->PrintAdjMatrix();
@@ -333,7 +333,7 @@ int main()
 			//Generate a graph based on this density and node number (i)
 			graph->GenerateRandomGraph(vertices, density);
 			//Export our graph so we can track and print in python~
-			graph->ExportGraph(folderPath + folderName + "/graph.csv");
+			//graph->ExportGraph(folderPath + folderName + "/graph.csv");
 
 #ifdef DEBUG
 			graph->PrintAdjMatrix();
