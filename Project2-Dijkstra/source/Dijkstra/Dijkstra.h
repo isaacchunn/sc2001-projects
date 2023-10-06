@@ -38,7 +38,6 @@ private:
     //A vector that indicates if this node is already been accounted for
 	static vector<int> S;
     //A vector that stores the distinct amount of shortest paths to each vertex
-    static vector<int> pathCount;
     
     //Debugging function
     static void Debug(Graph * g, int iteration);

@@ -11,14 +11,18 @@ PriorityQueueArray::PriorityQueueArray(TYPE type)
 }
 
 /// <summary>
-/// Inserts a node into the back of a vector.]
+/// Inserts a node into the back of a vector.
 /// </summary>
 /// <param name="n">node</param>
 bool PriorityQueueArray::Insert(Node* n)
 {
 	if (n == NULL)
 		return false;
-	//Inserts it at the back 
+
+	//Prevent duplicates.
+	if (std::find(elements.begin(), elements.end(), n) != elements.end())
+		return false;
+	
 	elements.push_back(n);
 	return true;
 }

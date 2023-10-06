@@ -5,6 +5,7 @@
 #include "../Heap/heap.h"
 
 #include <vector>
+#include <set>
 
 /// <summary>
 /// Mimics the behaviour of a priority queue using an array (* TYPE DOES NOT DO ANYTHING FOR NOW, IT IS ONLY MINIMIZING REGARDLESS OF TYPE!)

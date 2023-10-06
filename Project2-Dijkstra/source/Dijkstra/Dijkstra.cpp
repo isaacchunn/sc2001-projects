@@ -4,7 +4,6 @@
 //Static variable declarations
 vector<int> Dijkstra::S = {};
 vector<Node*> Dijkstra::pi = {};
-vector<int> Dijkstra::pathCount = {};
 
 /// <summary>
 /// Calculates the shortest paths from source to each linked node using a minimizing heap and adjacency list implementation.
@@ -36,8 +35,6 @@ void Dijkstra::CalculateShortestPathHeap(Graph *g , Node * source)
     }
     //Update distance to source to be 0 as source -> source is 0
     source->SetDistanceFromSource(0);
-    //Update distinct paths of source to source to be 1
-    pathCount[source->GetVertex()] = 1;
     
     //Insert source as first element of priority queue
     pq.Insert(source);
@@ -83,16 +80,8 @@ void Dijkstra::CalculateShortestPathHeap(Graph *g , Node * source)
                 adjNode->SetDistanceFromSource(u->GetDistanceFromSource() + curr->cost);
                 //Update pre-decessor
                 pi[adjNode->GetVertex()] = u;
-                //Update the counts to take into the distinct shortest paths of the parent as the shortest path is now from the parent
-                pathCount[adjNode->GetVertex()] = pathCount[u->GetVertex()];
                 //Insert the node back into the queue with updated weights
                 pq.Insert(adjNode);
-            }
-            else if (S[adjNode->GetVertex()] != 1 && adjNode->GetDistanceFromSource() == u->GetDistanceFromSource() + curr->cost)
-            {
-                //This case handles the part where another adjacent node has the same cost (another distinct path)
-                //Increment the count of adj node by that of u which includes all the unique paths that go to u
-                pathCount[adjNode->GetVertex()] += pathCount[u->GetVertex()];
             }
             curr = curr->next;
         }
@@ -132,8 +121,6 @@ void Dijkstra::CalculateShortestPathArray(Graph* g, Node* source)
     }
     //Update distance to source to be 0 as source -> source is 0
     source->SetDistanceFromSource(0);
-    //Update distinct paths of source to source to be 1
-    pathCount[source->GetVertex()] = 1;
 
     //Insert source as first element of priority queue
     pq.Insert(source);
@@ -181,16 +168,8 @@ void Dijkstra::CalculateShortestPathArray(Graph* g, Node* source)
                     adjNode->SetDistanceFromSource(u->GetDistanceFromSource() + cost);
                     //Update pre-decessor
                     pi[adjNode->GetVertex()] = u;
-                    //Update the counts to take into the distinct shortest paths of the parent as the shortest path is now from the parent
-                    pathCount[adjNode->GetVertex()] = pathCount[u->GetVertex()];
                     //Insert the node back into the queue with updated weights
                     pq.Insert(adjNode);
-                }
-                else if (S[adjNode->GetVertex()] != 1 && adjNode->GetDistanceFromSource() == u->GetDistanceFromSource() + cost)
-                {
-                    //This case handles the part where another adjacent node has the same cost (another distinct path)
-                    //Increment the count of adj node by that of u which includes all the unique paths that go to u
-                    pathCount[adjNode->GetVertex()] += pathCount[u->GetVertex()];
                 }
             }
         }
@@ -235,12 +214,10 @@ void Dijkstra::FindShortestPath(Graph * g, Node * source, Node * target, QUEUE_T
     //Clear our previous vectors
     pi.clear();
     S.clear();
-    pathCount.clear();
 
     //Resize our containers to the new graph's vertices
     pi.resize(g->V);
     S.resize(g->V);
-    pathCount.resize(g->V);
 
     //Calculate our shortest paths from the source node given
     if (type == QUEUE_TYPE::HEAP)
@@ -310,12 +287,10 @@ void Dijkstra::CalculateShortestPath(Graph* g, Node* source, QUEUE_TYPE type)
     //Clear our previous vectors
     pi.clear();
     S.clear();
-    pathCount.clear();
 
     //Resize our containers to the new graph's vertices
     pi.resize(g->V);
     S.resize(g->V);
-    pathCount.resize(g->V);
 
     switch (type)
     {
@@ -397,12 +372,4 @@ void Dijkstra::Debug(Graph * g, int iteration)
             cout << i->GetVertex() + 1 << " ";
     }
     cout << endl;
-    //Print path counts
-    cout << "Paths: ";
-    for(auto i : pathCount)
-    {
-        //cout << i->name << " ";
-        cout << i << " ";
-    }
-    cout  << endl;
 }
