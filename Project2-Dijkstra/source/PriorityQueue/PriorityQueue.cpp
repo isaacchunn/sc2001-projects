@@ -84,5 +84,5 @@ void PriorityQueue::PrintQueue()
 bool PriorityQueue::IsEmpty()
 {
 	//return heap size is 0
-	return heap.GetElements().size() == 0;
+	return heap.GetElements().empty();
 }

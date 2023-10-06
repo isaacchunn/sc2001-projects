@@ -4,7 +4,7 @@
 
 //#define DEBUG
 
-using namespace std;
+int Heap::keyComparisons = 0;
 
 Heap::Heap()
 	: heapType(MAXIMISING),
@@ -159,13 +159,51 @@ bool Heap::SetElements(vector<Node*>& other)
 /// <returns>True by default.</returns>
 bool Heap::Insert(Node* element)
 {
+	/*
 	if (std::find(elements.begin(), elements.end(), element) != elements.end())
 		return false;
+	*/
 
 	//Insert at the back and then reconstruct heap
 	this->elements.push_back(element);
-	//Reconstruct our heap
-	ConstructHeap();
+	//Update last_ptr
+	last_ptr = (int)elements.size() - 1;
+	//Fix upwards
+	int idx = last_ptr;
+
+	if (heapType == MINIMISING)
+	{
+		//Swap upwards until we satisfy the condition
+		while (((idx - 1) / 2) >= 0 && *elements[(idx - 1) / 2] > *elements[idx])
+		{
+			//While there is a parent, and the parent has a larger value than our element at idx
+			keyComparisons++;
+			
+			//Swap between both parent and current idx
+			Node* n = elements[idx];
+			elements[idx] = elements[(idx - 1) / 2];
+			elements[(idx - 1) / 2] = n;
+			
+			//Set idx to parent
+			idx = (idx - 1) / 2;
+		}
+	}
+	else
+	{
+		//Swap upwards until we satisfy the condition
+		while (((idx - 1) / 2) >= 0 && *elements[(idx - 1) / 2] < *elements[idx])
+		{
+			//While there is a parent, and the parent has a smaller value than our element at idx
+			keyComparisons++;
+
+			Node* n = elements[idx];
+			elements[idx] = elements[(idx - 1) / 2];
+			elements[(idx - 1) / 2] = n;
+
+			//Set idx to parent
+			idx = (idx - 1) / 2;
+		}
+	}
 	return true;
 }
 
@@ -185,11 +223,8 @@ void Heap::Delete()
 
 	//Store the last element of heap into temp variable and decrement last ptr
 	Node* k = elements[last_ptr--];
-
-
 	//Then fix heap based on first index and k up to the last ptr index
 	FixHeap(0, k, last_ptr);
-
 	//Then remove last index variable in heap
 	elements.pop_back();
 }
@@ -199,7 +234,7 @@ void Heap::Delete()
 /// </summary>
 /// <typeparam name="T"></typeparam>
 /// <param name="element">element to delete</param>
-void Heap::Delete(Node * element)
+void Heap::Delete(Node* element)
 {
 	//Return if nothing to Delete
 	if (this->elements.size() == 0)
@@ -209,20 +244,20 @@ void Heap::Delete(Node * element)
 #endif
 		return;
 	}
-
-	//Update last_ptr only if element deleting is < last_ptr
 	int i;
 	for (i = 0; i < elements.size(); i++)
 	{
 		if (elements[i] == element)
 		{
+			//We found it, swap last value with this value
+			Node* k = elements[last_ptr--];
+			//Then fix heap based on this index and k up to the last ptr index
+			FixHeap(i, k, last_ptr);
+			//Remove last element
+			elements.pop_back();
 			break;
 		}
 	}
-	//Then just erase at that element
-	elements.erase(elements.begin() + i);
-	//and reconstruct the entire heap
-	ConstructHeap();
 }
 
 
@@ -332,11 +367,13 @@ void Heap::FixHeap(int H, Node* k, int maxIndex)
 		//Check k higher than larger element
 		if (*k >= *elements[largerSubHeap] && this->heapType == MAXIMISING) // another comparison so 2 comparisons per fix heap
 		{
+			keyComparisons++;
 			//Safely insert as k is larger than both left and rightchild of current root
 			elements[H] = k;
 		}
 		else if (*k <= *elements[largerSubHeap] && this->heapType == MINIMISING)
 		{
+			keyComparisons++;
 			elements[H] = k;
 		}
 		else
