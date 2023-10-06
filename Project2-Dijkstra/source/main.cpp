@@ -206,6 +206,7 @@ int main()
 #endif
 				//Then start from the first vertex 0
 				Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
+				cout << "Iteration: " << i + 1 << "|";
 				Timer::PrintDuration();
 
 				//Then append the time taken
@@ -277,6 +278,7 @@ int main()
 				graph->PrintAdjList();
 #endif
 				Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
+				cout << "Iteration: " << i + 1 << "|";
 				Timer::PrintDuration();
 
 				//Then append the time taken
@@ -294,7 +296,7 @@ int main()
 		}
 		case 10:
 		{
-			//Fixed n varying density
+			//Fixed n fixed d
 			int density, mode, samples, vertices, graphMode;
 			cout << "Input vertices: " << endl;
 			cin >> vertices;
