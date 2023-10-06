@@ -6,6 +6,7 @@
 #include <iostream>
 #include "../PriorityQueue/PriorityQueue.h"
 #include "../PriorityQueue/PriorityQueueArray.h"
+#include "../Misc/Timer.h"
 
 //#define DEBUGPRINT
 

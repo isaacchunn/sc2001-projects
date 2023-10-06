@@ -286,7 +286,7 @@ void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 	for (int y = 0; y < 2; y++)
 	{
 		//Save second iteration if vertexes left are all zero
-		if (vertexesLeft.size() == 0)
+		if (vertexesLeft.size() == 0 && type == BIDIRECTIONAL)
 			break;
 
 		//Then randomly generate up to n
@@ -308,11 +308,32 @@ void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 				int weight = (rand() % (this->V * 2)) + 1;
 				int randVertex = (rand() % vertexesLeft.size());
 				int actualVertex = vertexesLeft[randVertex];
+				
+				//Tries for this vertex
+				int tries = edges[i];
 				while (actualVertex == i || adjMatrix[i][actualVertex] != INT_MAX) //reject overriding weights to itself or adding same weights
 				{
+					tries++;
 					//if only one vertex, nothing else we can do, just return out
 					if (vertexesLeft.size() <= 1)
 						break;
+					if (type == BIDIRECTIONAL && tries > density)
+						break;
+
+					////Print edges
+					//for (int k = 0; k < this->V; k++)
+					//{
+					//	cout << edges[k] << ", ";
+					//}
+					//cout << endl;
+					//cout << "Vertexes left size: " << vertexesLeft.size() << endl;
+					//cout << "Vertexes left: ";
+					//for (int k = 0; k < vertexesLeft.size(); k++)
+					//{
+					//	cout << vertexesLeft[k] << ", ";
+					//}
+					//cout << endl;
+					//cout << "Generated Vertex: " << actualVertex << " i: " << i << endl;
 
 					randVertex = (rand() % vertexesLeft.size());
 					actualVertex = vertexesLeft[randVertex];

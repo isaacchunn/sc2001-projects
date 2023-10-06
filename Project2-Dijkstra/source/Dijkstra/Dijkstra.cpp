@@ -16,8 +16,9 @@ void Dijkstra::CalculateShortestPathHeap(Graph *g , Node * source)
     //Handle trivial cases
     if(g == NULL || source== NULL)
         return;
-    
+
     cout << "[Heap] Calculating Shortest Path from " << source->GetName() << endl;
+    Timer::Start();
     
     //Initialize new priority queue
     //Priority queue in terms of int distances, we will utilise the map
@@ -96,6 +97,7 @@ void Dijkstra::CalculateShortestPathHeap(Graph *g , Node * source)
             curr = curr->next;
         }
     }
+    Timer::Stop();
 #ifdef DEBUGPRINT
     Debug(g,iteration++);
 #endif
@@ -113,7 +115,7 @@ void Dijkstra::CalculateShortestPathArray(Graph* g, Node* source)
         return;
 
     cout << "[Array] Calculating Shortest Path from " << source->GetName() << endl;
-
+    Timer::Start();
     //Initialize new priority queue
     //Priority queue in terms of int distances, we will utilise the map
     PriorityQueueArray pq = PriorityQueueArray(TYPE::MINIMISING);
@@ -193,6 +195,7 @@ void Dijkstra::CalculateShortestPathArray(Graph* g, Node* source)
             }
         }
     }
+    Timer::Stop();
 #ifdef DEBUGPRINT
     Debug(g, iteration++);
 #endif

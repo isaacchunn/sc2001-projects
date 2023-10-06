@@ -152,18 +152,21 @@ int main()
 		}
 		case 8:
 		{
-			//Set graph type to bidirectional
-			graph->type = BIDIRECTIONAL;
 			//Fixed density varying n
-			int density, mode, samples, vertices;
+			int density, mode, samples, vertices, graphMode;
 			cout << "Input max vertices: " << endl;
 			cin >> vertices;
 			cout << "Input density: " << endl;
 			cin >> density;
 			cout << "Input samples: " << endl;
 			cin >> samples;
+			cout << "Enter type DIRECTIONAL:0 or BIDIRECTIONAL:1 : " << endl;
+			cin >> graphMode;
 			cout << "Input mode (0: HEAP, 1: ARRAY): ";
 			cin >> mode;
+
+			//Update graph mode
+			graph->type = (GRAPH_TYPE)graphMode;
 
 			string folderPath = "data/VaryingVFixedD/";
 			string folderName = "V_" + to_string(vertices) + "_D_" + to_string(density);
@@ -202,9 +205,7 @@ int main()
 				graph->PrintAdjList();
 #endif
 				//Then start from the first vertex 0
-				Timer::Start();
 				Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
-				Timer::Stop();
 				Timer::PrintDuration();
 
 				//Then append the time taken
@@ -222,18 +223,21 @@ int main()
 		}
 		case 9:
 		{
-			//Set graph type to bidirectional
-			graph->type = BIDIRECTIONAL;
 			//Fixed n varying density
-			int density, mode, samples, vertices;
+			int density, mode, samples, vertices,graphMode;
 			cout << "Input vertices: " << endl;
 			cin >> vertices;
 			cout << "Input max density: " << endl;
 			cin >> density;
 			cout << "Input samples: " << endl;
 			cin >> samples;
+			cout << "Enter type DIRECTIONAL:0 or BIDIRECTIONAL:1 : " << endl;
+			cin >> graphMode;
 			cout << "Input mode (0: HEAP, 1: ARRAY): ";
 			cin >> mode;
+
+			//Update graph mode
+			graph->type = (GRAPH_TYPE)graphMode;
 
 			string folderPath = "data/VaryingDFixedV/";
 			string folderName = "V_" + to_string(vertices) + "_D_" + to_string(density);
@@ -272,10 +276,7 @@ int main()
 				graph->PrintAdjMatrix();
 				graph->PrintAdjList();
 #endif
-				//Then start from the first vertex 0
-				Timer::Start();
 				Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
-				Timer::Stop();
 				Timer::PrintDuration();
 
 				//Then append the time taken
@@ -293,16 +294,19 @@ int main()
 		}
 		case 10:
 		{
-			//Set graph type to bidirectional
-			graph->type = BIDIRECTIONAL;
 			//Fixed n varying density
-			int density, mode, samples, vertices;
+			int density, mode, samples, vertices, graphMode;
 			cout << "Input vertices: " << endl;
 			cin >> vertices;
 			cout << "Input density: " << endl;
 			cin >> density;
+			cout << "Enter type DIRECTIONAL:0 or BIDIRECTIONAL:1 : " << endl;
+			cin >> graphMode;
 			cout << "Input mode (0: HEAP, 1: ARRAY): ";
 			cin >> mode;
+
+			//Update graph mode
+			graph->type = (GRAPH_TYPE)graphMode;
 
 			string folderPath = "data/FixedDFixedV/";
 			string folderName = "V_" + to_string(vertices) + "_D_" + to_string(density);
@@ -336,9 +340,7 @@ int main()
 			graph->PrintAdjList();
 #endif
 			//Then start from the first vertex 0
-			Timer::Start();
 			Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
-			Timer::Stop();
 			Timer::PrintDuration();
 
 			//Then append the time taken
