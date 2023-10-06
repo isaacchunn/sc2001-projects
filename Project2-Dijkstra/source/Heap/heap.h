@@ -30,7 +30,7 @@ class Heap
         //Store the name of this heap for identification
         string heapName;
         //Misc
-        int keyComparisons = 0;
+        static int keyComparisons;
 
     public:
         //Constructors, Destructors

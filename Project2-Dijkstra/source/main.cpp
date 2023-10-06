@@ -218,7 +218,7 @@ int main()
 
 			//Then finally export into relevant excels
 			DataHandler::WriteCSV(filePath, { "Vertices","Density","Time taken(ms)" }, stringData);
-			cout << "Data successfully exported to" << filePath << endl;
+			cout << "Data successfully exported to " << filePath << endl;
 			break;
 		}
 		case 9:
@@ -289,7 +289,7 @@ int main()
 
 			//Then finally export into relevant excels
 			DataHandler::WriteCSV(filePath, { "Vertices","Density","Time taken(ms)" }, stringData);
-			cout << "Data successfully exported to" << filePath << endl;
+			cout << "Data successfully exported to " << filePath << endl;
 			break;
 		}
 		case 10:
@@ -349,7 +349,7 @@ int main()
 
 			//Then finally export into relevant excels
 			DataHandler::WriteCSV(filePath, { "Vertices","Density","Time taken(ms)" }, stringData);
-			cout << "Data successfully exported to" << filePath << endl;
+			cout << "Data successfully exported to " << filePath << endl;
 			break;
 		}
 		case 11:

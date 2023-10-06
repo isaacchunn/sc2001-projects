@@ -74,6 +74,7 @@ void PriorityQueueArray::PrintQueue()
 {
 	for (auto n : elements)
 		cout << n << " ";
+	cout << endl;
 }
 
 /// <summary>
