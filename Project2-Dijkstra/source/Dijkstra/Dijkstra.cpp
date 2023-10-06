@@ -324,7 +324,7 @@ void Dijkstra::CalculateShortestPath(Graph* g, Node* source, QUEUE_TYPE type)
             CalculateShortestPathArray(g, source);
             break;
         }
-        case TOTAL_TYPE:
+        case TOTAL_QUEUETYPE:
         {
             break;
         }
