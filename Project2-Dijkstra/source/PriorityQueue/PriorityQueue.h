@@ -10,7 +10,7 @@
 class PriorityQueue
 {
 	public:
-		Heap<Node*> heap;
+		Heap heap;
 	public:
 		PriorityQueue();
 		PriorityQueue(TYPE heapType);

@@ -314,9 +314,10 @@ void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 			}
 		}
 	}
-
+	cout << "Graph finished generating." << endl;
 	//After this is done, calculate our adj list
 	UpdateAdjacencyList();
+
 }
 
 

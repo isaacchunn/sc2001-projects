@@ -15,14 +15,13 @@ enum TYPE
     TOTAL_MODE
 };
 
-/// <summary>
-/// Non templated heap update 10/6/2023 as templated heap was causing different results on compilation
-/// </summary>
+//Create a class template for
+template <class T>
 class Heap
 {
     private:
         //Have the heap store a vector of elements
-        std::vector<Node*> elements;
+        std::vector<T> elements;
         //Store the type of heap
         TYPE heapType;
         //Store last pointer to present the "sorted result"
@@ -43,7 +42,7 @@ class Heap
         void SetName(string name);
         TYPE GetHeapType();
         string GetName();
-        vector<Node*> GetElements();
+        vector<T> GetElements();
         
         //Print the heap
         void PrintElements();
@@ -52,17 +51,22 @@ class Heap
 
         //Typical methods of heap
         bool ConstructHeap();
-        bool SetElements(vector<Node*>& other);
-        bool Insert(Node* element);
+        bool SetElements(vector<T>& other);
+        bool Insert(T element);
         void Delete();
-        void Delete(Node* element);
+        void Delete(T element);
         //*
-        bool HeapSort(vector<Node*>& result);
+        bool HeapSort(vector<T>& result);
 
     private:
         //Private methods that are exclusive to the heap
         void Heapify(int H);
-        void FixHeap(int H, Node* k, int maxIndex);
+        void FixHeap(int H, T k, int maxIndex);
         bool isLeaf(int H);
 };
+
+template class Heap<Node*>;
+//template file inclusion
+#include "heap_t.tpp"
+
 #endif

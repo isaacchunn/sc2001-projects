@@ -34,10 +34,10 @@ public:
     void SetName(std::string name);
 
     //Overload and add comparisons for heap
-    bool operator>(const Node* other);
-    bool operator<(const Node* other);
-    bool operator>=(const Node* other);
-    bool operator<=(const Node* other);
+    bool operator>(const Node& other) const;
+    bool operator<(const Node& other) const;
+    bool operator>=(const Node& other) const;
+    bool operator<=(const Node& other) const;
 
     //Overloaded ostream
     friend std::ostream& operator<<(std::ostream& os, const Node* date);

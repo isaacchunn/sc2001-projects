@@ -53,24 +53,24 @@ void Node::SetName(std::string name)
     this->name = name;
 }
 
-bool Node::operator>(const Node* other)
+bool Node::operator>(const Node& other) const
 {
-    return this->dist > other->dist;
+    return dist > other.dist;
 }
 
-bool Node::operator<(const Node* other)
+bool Node::operator<(const Node& other) const
 {
-    return this->dist < other->dist;
+    return dist < other.dist;
 }
 
-bool Node::operator>=(const Node* other)
+bool Node::operator>=(const Node& other) const
 {
-    return this->dist >= other->dist;
+    return dist >= other.dist;
 }
 
-bool Node::operator<=(const Node* other)
+bool Node::operator<=(const Node& other) const
 {
-    return this->dist <= other->dist;
+    return dist <= other.dist;
 }
 
 std::ostream& operator<<(std::ostream& os, const Node* other)

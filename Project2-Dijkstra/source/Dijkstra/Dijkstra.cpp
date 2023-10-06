@@ -17,7 +17,7 @@ void Dijkstra::CalculateShortestPathHeap(Graph *g , Node * source)
     if(g == NULL || source== NULL)
         return;
     
-    cout << "Calculating Shortest Path from " << source->GetName() << endl;
+    cout << "[Heap] Calculating Shortest Path from " << source->GetName() << endl;
     
     //Initialize new priority queue
     //Priority queue in terms of int distances, we will utilise the map
@@ -65,7 +65,7 @@ void Dijkstra::CalculateShortestPathHeap(Graph *g , Node * source)
         //Pop first u to get first vertex
         Node * u = pq.Top();
 #ifdef DEBUGPRINT
-        cout << "Popped " << u->GetName() << " with vertex " << u->GetVertex() << endl;
+        //cout << "Popped " << u->GetName() << " with vertex " << u->GetVertex() << endl;
 #endif
         //Update visited array
         S[u->GetVertex()] = 1;
@@ -122,7 +122,7 @@ void Dijkstra::CalculateShortestPathArray(Graph* g, Node* source)
     if (g == NULL || source == NULL)
         return;
 
-    cout << "Calculating Shortest Path from " << source->GetName() << endl;
+    cout << "[Array] Calculating Shortest Path from " << source->GetName() << endl;
 
     //Initialize new priority queue
     //Priority queue in terms of int distances, we will utilise the map

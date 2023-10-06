@@ -7,8 +7,6 @@
 #include "Misc/Timer.h"
 #include <filesystem>
 
-using namespace std;
-
 #define M INT_MAX
 #define MAX_VERTICE 1000
 #define MAX_DENSITY 1000
@@ -73,6 +71,9 @@ int main()
 			//Get input and update adj matrix
 			graph->PrintAdjMatrix();
 			graph->PrintAdjList();
+			
+
+
 			break;
 		}
 		case 2:

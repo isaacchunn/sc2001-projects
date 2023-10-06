@@ -20,7 +20,6 @@ bool PriorityQueueArray::Insert(Node* n)
 		return false;
 	//Inserts it at the back 
 	elements.push_back(n);
-
 	return true;
 }
 
