@@ -5,10 +5,14 @@
 #include "Dijkstra/ListNode.h"
 #include "Dijkstra/Dijkstra.h"
 #include "Misc/Timer.h"
+#include <filesystem>
 
 using namespace std;
 
 #define M INT_MAX
+#define MAX_VERTICE 1000
+#define MAX_DENSITY 1000
+//#define DEBUG 
 
 int main()
 {
@@ -27,9 +31,12 @@ int main()
 		cout << "4) Export Graph" << endl;
 		cout << "5) Print Graph Details" << endl;
 		cout << "6) Find Shortest Path" << endl;
-		cout << "7) Dijkstra" << endl;
-		cout << "8) Clear Console" << endl;
-		cout << "9) Quit" << endl;
+		cout << "7) Dijkstra [Single]" << endl;
+		cout << "8) Dijkstra [Fixed Density Varying V]" << endl;
+		cout << "9) Dijkstra [Fixed V Varying Density]" << endl;
+		cout << "10) Dijkstra [Chosen V and D]" << endl;
+		cout << "11) Clear Console" << endl;
+		cout << "12) Quit" << endl;
 		cout << "Input choice: ";
 		cin >> choice;
 
@@ -70,12 +77,14 @@ int main()
 		}
 		case 2:
 		{
-			//TODO
-			int n, density;
+			int n, density, mode;
 			cout << "Enter number of nodes: ";
 			cin >> n;
 			cout << "Enter density: ";
 			cin >> density;
+			cout << "Enter type DIRECTIONAL:0 or BIDIRECTIONAL:1 : " << endl;
+			cin >> mode;
+			graph->type = GRAPH_TYPE(mode);
 			graph->GenerateRandomGraph(n, density);
 			graph->PrintAdjMatrix();
 			graph->PrintAdjList();
@@ -97,7 +106,7 @@ int main()
 			cout << "What name is this graph called?: ";
 			std::string fileName;
 			cin >> fileName;
-			string filePath = "data/" + fileName + ".csv";
+			string filePath = "data/Graphs/" + fileName + ".csv";
 			if (graph->ExportGraph(filePath))
 				cout << "Graph successfully exported to " + filePath << endl;
 			break;
@@ -123,6 +132,12 @@ int main()
 		}
 		case 7:
 		{
+			if (graph->V == 0)
+			{
+				cout << "Load or generate a graph first!" << endl;
+				break;
+			}
+
 			int sourceVertex, mode;
 			cout << "Input source vertex: " << endl;
 			cin >> sourceVertex;
@@ -138,6 +153,201 @@ int main()
 		}
 		case 8:
 		{
+			//Set graph type to bidirectional
+			graph->type = BIDIRECTIONAL;
+			//Fixed density varying n
+			int density, mode, samples, vertices;
+			cout << "Input max vertices: " << endl;
+			cin >> vertices;
+			cout << "Input density: " << endl;
+			cin >> density;
+			cout << "Input samples: " << endl;
+			cin >> samples;
+			cout << "Input mode (0: HEAP, 1: ARRAY): ";
+			cin >> mode;
+
+			string folderPath = "data/VaryingVFixedD/";
+			string folderName = "V_" + to_string(vertices) + "_D_" + to_string(density);
+			if (mode == HEAP)
+				folderName += "_Heap";
+			else
+				folderName += "_Array";
+			string filePath = folderPath + folderName + "/" + folderName + ".csv";
+
+			//Make directory
+			if (!std::filesystem::exists(folderPath + folderName))
+				std::filesystem::create_directory(folderPath + folderName + "/");
+
+			//Trivial checking
+			if (vertices < 0 || density < 0)
+			{
+				cout << "Vertices or density cannot be 0." << endl;
+				break;
+			}
+			vector<string> stringData;
+			//Take up to input vertices / samples if its divisible
+			int step = vertices / samples;
+			int graphNumber = 1;
+			for (int i = step; i <= vertices; i += step)
+			{
+				string data = to_string(i) + "," + to_string(density) + ",";
+				//Generate a graph based on this density and node number (i)
+				graph->GenerateRandomGraph(i, density);
+				//Export our graph so we can track and print in python~
+				graph->ExportGraph(folderPath + folderName + "/graph" + to_string(graphNumber) + ".csv");
+
+#ifdef DEBUG
+				graph->PrintAdjMatrix();
+				graph->PrintAdjList();
+#endif
+				//Then start from the first vertex 0
+				Timer::Start();
+				Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
+				Timer::Stop();
+				Timer::PrintDuration();
+
+				//Then append the time taken
+				data += to_string(Timer::GetDuration().count());
+				stringData.push_back(data);
+
+				//Increment graph Number
+				graphNumber++;
+			}
+
+			//Then finally export into relevant excels
+			DataHandler::WriteCSV(filePath, { "Vertices","Density","Time taken(ms)" }, stringData);
+			cout << "Data successfully exported to" << filePath << endl;
+			break;
+		}
+		case 9:
+		{
+			//Set graph type to bidirectional
+			graph->type = BIDIRECTIONAL;
+			//Fixed n varying density
+			int density, mode, samples, vertices;
+			cout << "Input vertices: " << endl;
+			cin >> vertices;
+			cout << "Input max density: " << endl;
+			cin >> density;
+			cout << "Input samples: " << endl;
+			cin >> samples;
+			cout << "Input mode (0: HEAP, 1: ARRAY): ";
+			cin >> mode;
+
+			string folderPath = "data/VaryingDFixedV/";
+			string folderName = "V_" + to_string(vertices) + "_D_" + to_string(density);
+			if (mode == HEAP)
+				folderName += "_Heap";
+			else
+				folderName += "_Array";
+			
+			string filePath = folderPath + folderName + "/" + folderName + ".csv";
+
+			//Make directory
+			if (!std::filesystem::exists(folderPath + folderName))
+				std::filesystem::create_directory(folderPath + folderName + "/");
+
+			//Trivial checking
+			if (vertices < 0 || density < 0)
+			{
+				cout << "Vertices or density cannot be 0." << endl;
+				break;
+			}
+			vector<string> stringData;
+			//Take up to input vertices / samples if its divisible
+			int step = density / samples;
+			int graphNumber = 1;
+			for (int i = step; i <= density; i += step)
+			{
+				string data = to_string(vertices) + "," + to_string(i) + ",";
+				//Generate a graph based on this density and node number (i)
+				graph->GenerateRandomGraph(vertices, i);
+				//Export our graph so we can track and print in python~
+				graph->ExportGraph(folderPath + folderName + "/graph" + to_string(graphNumber) + ".csv");
+
+#ifdef DEBUG
+				graph->PrintAdjMatrix();
+				graph->PrintAdjList();
+#endif
+				//Then start from the first vertex 0
+				Timer::Start();
+				Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
+				Timer::Stop();
+				Timer::PrintDuration();
+
+				//Then append the time taken
+				data += to_string(Timer::GetDuration().count());
+				stringData.push_back(data);
+
+				//Increment graph Number
+				graphNumber++;
+			}
+
+			//Then finally export into relevant excels
+			DataHandler::WriteCSV(filePath, { "Vertices","Density","Time taken(ms)" }, stringData);
+			cout << "Data successfully exported to" << filePath << endl;
+			break;
+		}
+		case 10:
+		{
+			//Set graph type to bidirectional
+			graph->type = BIDIRECTIONAL;
+			//Fixed n varying density
+			int density, mode, samples, vertices;
+			cout << "Input vertices: " << endl;
+			cin >> vertices;
+			cout << "Input density: " << endl;
+			cin >> density;
+			cout << "Input mode (0: HEAP, 1: ARRAY): ";
+			cin >> mode;
+
+			string folderPath = "data/FixedDFixedV/";
+			string folderName = "V_" + to_string(vertices) + "_D_" + to_string(density);
+			if (mode == HEAP)
+				folderName += "_Heap";
+			else
+				folderName += "_Array";
+			string filePath = folderPath + folderName + "/" + folderName + ".csv";
+
+			//Make directory
+			if (!std::filesystem::exists(folderPath + folderName))
+				std::filesystem::create_directory(folderPath + folderName + "/");
+
+			//Trivial checking
+			if (vertices < 0 || density < 0)
+			{
+				cout << "Vertices or density cannot be 0." << endl;
+				break;
+			}
+			vector<string> stringData;
+			//Take up to input vertices / samples if its divisible
+			string data = to_string(vertices) + "," + to_string(density) + ",";
+			//Generate a graph based on this density and node number (i)
+			graph->GenerateRandomGraph(vertices, density);
+			//Export our graph so we can track and print in python~
+			graph->ExportGraph(folderPath + folderName + "/graph.csv");
+
+#ifdef DEBUG
+			graph->PrintAdjMatrix();
+			graph->PrintAdjList();
+#endif
+			//Then start from the first vertex 0
+			Timer::Start();
+			Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
+			Timer::Stop();
+			Timer::PrintDuration();
+
+			//Then append the time taken
+			data += to_string(Timer::GetDuration().count());
+			stringData.push_back(data);
+
+			//Then finally export into relevant excels
+			DataHandler::WriteCSV(filePath, { "Vertices","Density","Time taken(ms)" }, stringData);
+			cout << "Data successfully exported to" << filePath << endl;
+			break;
+		}
+		case 11:
+		{
 			system("cls");
 			break;
 		}
@@ -147,7 +357,7 @@ int main()
 		}
 		}
 
-	} while (choice != 9);
+	} while (choice != 11);
 	return 0;
 }
 

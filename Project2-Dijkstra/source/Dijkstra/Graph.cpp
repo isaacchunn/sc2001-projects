@@ -244,6 +244,11 @@ void Graph::PrintAdjList()
 /// <param name="density">number of edges a node can connect to</param>
 void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 {
+
+	//Error handling to limit density to number of nodes
+	if (density > numberOfNodes)
+		density = numberOfNodes;
+
 	//Initialize time
 	srand(time(0));
 	//Clear any previous graph if not done yet
@@ -257,6 +262,8 @@ void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 	{
 		//Initialize all to max to show the links
 		adjMatrix[i] = vector<int>(this->V, INT_MAX);
+		//Then update the vector to be 0 on the diagonals
+		adjMatrix[i][i] = 0;
 		//Update our map
 		//Create a new node and store into nodes
 		Node* newNode = new Node(i, 0, to_string(i + 1));
@@ -272,33 +279,42 @@ void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 	//Then randomly generate up to n
 	for (int i = 0; i < this->V; i++)
 	{
-		////If its below 1, then the only thing that can connect is between the first 2 vertices
-		//if (i <= 1)
-		//{		
-		//	//Generate a weight between vertices
-		//	int weight = (rand() % (this->V * 2)) + 1;
-		//	adjMatrix[0][1] = weight;
-		//	//if its bidirectional, add the other side as well
-		//	if (type == BIDIRECTIONAL)
-		//		adjMatrix[1][0] = weight;
-		//}
-		//else
-		//{
-			//For loop up to density and connect to previously connected graphs
-		for (int j = 0; j < density; j++)
+		//If its below 1, then the only thing that can connect is between the first 2 vertices
+		if (i <= 1)
 		{
 			//Generate a weight between vertices
 			int weight = (rand() % (this->V * 2)) + 1;
-			int randVertex = (rand() % this->V);
-			cout << "Adding edge between " << i << " and " << randVertex << " of weight: " << weight << endl;
-			//Then link this vertex to rand vertex
-			adjMatrix[i][randVertex] = weight;
+			adjMatrix[0][1] = weight;
+			//if its bidirectional, add the other side as well
 			if (type == BIDIRECTIONAL)
-				adjMatrix[randVertex][i] = weight;
+				adjMatrix[1][0] = weight;
 		}
-		//}
+		else
+		{
+			//For loop up to density and connect to previously connected graphs
+			for (int j = 0; j < density; j++)
+			{
+				if (j > i)
+				{
+					//If density is more than current node, we can stop here
+					break;
+				}
+				//Generate a weight between vertices
+				int weight = (rand() % (this->V * 2)) + 1;
+				int randVertex = (rand() % i);
+				while (randVertex == i) //reject overriding weights to itself
+				{
+					randVertex = (rand() % i);
+				}
+				//cout << "Adding edge between " << i << " and " << randVertex << " of weight: " << weight << endl;
+				//Then link this vertex to rand vertex
+				adjMatrix[i][randVertex] = weight;
+				if (type == BIDIRECTIONAL)
+					adjMatrix[randVertex][i] = weight;
+			}
+		}
 	}
-	
+
 	//After this is done, calculate our adj list
 	UpdateAdjacencyList();
 }
