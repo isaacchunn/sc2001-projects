@@ -30,7 +30,7 @@ class Graph
 
 		vector<vector<int>> adjMatrix;
 		vector<ListNode*> adjList;
-		unordered_map<int,Node*> nodes;
+		vector<Node*> nodes;
 		
 		//Functions
 		void SetNoOfVertices(int vertices);

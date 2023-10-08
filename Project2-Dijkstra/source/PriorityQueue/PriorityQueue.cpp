@@ -51,14 +51,14 @@ bool PriorityQueue::Delete(Node* n)
 /// <returns></returns>
 Node* PriorityQueue::Top()
 {
-	//If the heap is empty
-	if (IsEmpty())
-	{
-#ifdef DEBUG
-		cout << "Empty heap" << endl;
-#endif
-		return NULL;
-	}
+//	//If the heap is empty
+//	if (IsEmpty())
+//	{
+//#ifdef DEBUG
+//		cout << "Empty heap" << endl;
+//#endif
+//		return NULL;
+//	}
 	
 	//Else we can get the heap's first index and call delete
 	Node* n = heap.GetElements()[0];

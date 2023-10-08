@@ -15,6 +15,7 @@ class PriorityQueueArray
 	private:
 		std::vector<Node*> elements;
 		TYPE type;
+		int size;
 	public:
 		PriorityQueueArray();
 		PriorityQueueArray(TYPE type);
@@ -22,6 +23,7 @@ class PriorityQueueArray
 		//Typical queue functions
 		bool Insert(Node* n);
 		bool Delete(Node* n);
+		bool Delete(int vertex);
 		Node* GetSmallest();
 		bool IsEmpty();
 

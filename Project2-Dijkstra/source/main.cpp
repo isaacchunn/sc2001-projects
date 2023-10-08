@@ -34,9 +34,10 @@ int main()
 		cout << "7) Dijkstra [Single]" << endl;
 		cout << "8) Dijkstra [Fixed Density Varying V]" << endl;
 		cout << "9) Dijkstra [Fixed V Varying Density]" << endl;
-		cout << "10) Dijkstra [Chosen V and D]" << endl;
-		cout << "11) Clear Console" << endl;
-		cout << "12) Quit" << endl;
+		cout << "10) Dijkstra [Complete Graph up to N]" << endl;
+		cout << "11) Dijkstra [Chosen V and D]" << endl;
+		cout << "12) Clear Console" << endl;
+		cout << "13) Quit" << endl;
 		cout << "Input choice: ";
 		cin >> choice;
 
@@ -312,6 +313,81 @@ int main()
 			break;
 		}
 		case 10:
+		{			
+			//Fixed density varying n
+			int mode, samples, vertices, graphMode;
+			cout << "Input max vertices: " << endl;
+			cin >> vertices;
+			cout << "Input samples: " << endl;
+			cin >> samples;
+			cout << "Enter type DIRECTIONAL:0 or BIDIRECTIONAL:1 : " << endl;
+			cin >> graphMode;
+			cout << "Input mode (0: HEAP, 1: ARRAY): ";
+			cin >> mode;
+
+			//Update graph mode
+			graph->type = (GRAPH_TYPE)graphMode;
+
+			string folderPath = "data/VaryingVVaryingD/";
+			string folderName = "V_" + to_string(vertices) + "_D_" + to_string(vertices);
+			if (mode == HEAP)
+				folderName += "_Heap";
+			else
+				folderName += "_Array";
+			string filePath = folderPath + folderName + "/" + folderName + ".csv";
+
+			//Make directory
+			if (!std::filesystem::exists(folderPath + folderName))
+				std::filesystem::create_directory(folderPath + folderName + "/");
+			if (!std::filesystem::exists(folderPath + folderName + "/Graph"))
+				std::filesystem::create_directory(folderPath + folderName + "/Graph/");
+
+			//Trivial checking
+			if (vertices < 0)
+			{
+				cout << "Vertices cannot be 0." << endl;
+				break;
+			}
+			vector<string> stringData;
+			//Take up to input vertices / samples if its divisible
+			int step = vertices / samples;
+			int graphNumber = 1;
+			for (int i = step; i <= vertices; i += step)
+			{
+				string data = to_string(i) + "," + to_string(i) + ",";
+				//Generate a graph based on this density and node number (i)
+				graph->GenerateRandomGraph(i, i);
+				//Export our graph so we can track and print in python~
+				//graph->ExportGraph(folderPath + folderName + "/Graph/graph" + to_string(graphNumber) + ".csv");
+
+#ifdef DEBUG
+				graph->PrintAdjMatrix();
+				graph->PrintAdjList();
+#endif
+				long sumTime = 0;
+				for (int j = 0; j < AVG_SAMPLES; j++)
+				{
+					//Then start from the first vertex 0
+					Dijkstra::CalculateShortestPath(graph, 0, (QUEUE_TYPE)mode);
+					sumTime += Timer::GetDuration().count();
+					//std::cout << " Time taken: " << Timer::GetDuration().count() << " microseconds" << std::endl;
+				}
+				cout << "Iteration: " << i + 1 << "|";
+				std::cout << " Average Time taken: " << sumTime / AVG_SAMPLES << " microseconds" << std::endl;
+				//Then append the time taken
+				data += to_string(sumTime / AVG_SAMPLES);
+				stringData.push_back(data);
+
+				//Increment graph Number
+				graphNumber++;
+			}
+
+			//Then finally export into relevant excels
+			DataHandler::WriteCSV(filePath, { "Vertices","Density","Time taken(ms)" }, stringData);
+			cout << "Data successfully exported to " << filePath << endl;
+			break;
+		}
+		case 11:
 		{
 			//Fixed n fixed d
 			int density, mode, samples, vertices, graphMode;
@@ -371,7 +447,7 @@ int main()
 			cout << "Data successfully exported to " << filePath << endl;
 			break;
 		}
-		case 11:
+		case 12:
 		{
 			system("cls");
 			break;

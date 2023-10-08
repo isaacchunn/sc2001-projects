@@ -1,5 +1,7 @@
 #include "Graph.h"
 
+#define MAX_TRIES 50
+
 Graph::Graph()
 	:V(0), E(0), type(GRAPH_TYPE::DIRECTIONAL)
 {
@@ -31,13 +33,14 @@ void Graph::SetNoOfVertices(int v)
 	//Resize adjacency list to have |V| elements
 	this->adjList.resize(v);
 
+	//Resize node list
+	this->nodes.resize(v);
+
 	//Then resize the adj matrix at each i and create a list node at each i
 	for (int i = 0; i < this->V; i++)
 	{
 		this->adjMatrix[i].resize(this->V);
 	}
-	//Clear nodes map
-	nodes.clear();
 }
 
 /// <summary>
@@ -87,6 +90,8 @@ bool Graph::LoadGraph(std::string file)
 	//Resize adj list
 	adjList.resize(this->V);
 
+	//Resize node list
+	nodes.resize(this->V);
 	//Instantiate nodes up to V
 	for (int i = 0; i < this->V; i++)
 	{
@@ -260,6 +265,8 @@ void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 	vector<int> vertexesLeft = vector<int>(this->V, 0);
 	//Resize our adj list and matrix
 	adjMatrix.resize(this->V);
+	//Resize nodes
+	this->nodes.resize(this->V);
 	for (int i = 0; i < this->V; i++)
 	{
 		//Initialize all to max to show the links
@@ -310,14 +317,14 @@ void Graph::GenerateRandomGraph(int numberOfNodes, int density)
 				int actualVertex = vertexesLeft[randVertex];
 				
 				//Tries for this vertex
-				int tries = edges[i];
+				int tries = 0;
 				while (actualVertex == i || adjMatrix[i][actualVertex] != INT_MAX) //reject overriding weights to itself or adding same weights
 				{
 					tries++;
 					//if only one vertex, nothing else we can do, just return out
 					if (vertexesLeft.size() <= 1)
 						break;
-					if (type == BIDIRECTIONAL && tries > density)
+					if (type == BIDIRECTIONAL && tries > MAX_TRIES)
 						break;
 
 					////Print edges

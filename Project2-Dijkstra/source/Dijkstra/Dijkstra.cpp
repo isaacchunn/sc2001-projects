@@ -68,16 +68,19 @@ void Dijkstra::CalculateShortestPathHeap(Graph* g, Node* source)
 #ifdef DEBUGPRINT
 		//cout << "Popped " << u->GetName() << " with vertex " << u->GetVertex() << endl;
 #endif
+		int uVertex = u->GetVertex();
+		int uDist = u->GetDistanceFromSource();
 		//Update visited array
-		S[u->GetVertex()] = 1;
+		S[uVertex] = 1;
 		//Then for each vertex v adjacent to u
 		//Use the adjacency list
-		ListNode* curr = g->adjList[u->GetVertex()];
+		ListNode* curr = g->adjList[uVertex];
 		//Go through all the neighbours
 		while (curr != NULL)
 		{
 			Node* adjNode = curr->node;
-
+			int adjVertex = adjNode->GetVertex();
+			int adjDist = adjNode->GetDistanceFromSource();
 #ifndef ADDALLNODES
 			//If the node has not been visited yet, and is not already in the queue, we add it.
 			if (S[adjNode->GetVertex()] == 0)
@@ -87,14 +90,14 @@ void Dijkstra::CalculateShortestPathHeap(Graph* g, Node* source)
 #endif
 			//If this node is not in the shortest path set
 			//And the current distance to the node is more than the current cost to REACH current vertex + distance from this vertex to node
-			if (S[adjNode->GetVertex()] != 1 && adjNode->GetDistanceFromSource() > u->GetDistanceFromSource() + curr->cost)
+			if (S[adjVertex] != 1 && adjDist > uDist + curr->cost)
 			{
 				//Remove this node and update back
 				pq.Delete(adjNode);
 				//Update the distance of adjacent node to the shorter distance
-				adjNode->SetDistanceFromSource(u->GetDistanceFromSource() + curr->cost);
+				adjNode->SetDistanceFromSource(uDist + curr->cost);
 				//Update pre-decessor
-				pi[adjNode->GetVertex()] = u;
+				pi[adjVertex] = u;
 				//Insert the node back into the queue with updated weights
 				pq.Insert(adjNode);
 			}
@@ -165,21 +168,25 @@ void Dijkstra::CalculateShortestPathArray(Graph* g, Node* source)
 #endif
 		//Pop first u to get first vertex
 		Node* u = pq.GetSmallest();
+		int uVertex = u->GetVertex();
+		int uDist = u->GetDistanceFromSource();
 #ifdef DEBUGPRINT
 		cout << "Popped " << u->GetName() << " with vertex " << u->GetVertex() << endl;
 #endif
 		//Update visited array
-		S[u->GetVertex()] = 1;
+		S[uVertex] = 1;
 		//Then for each vertex v adjacent to u
 		//Look into our adjacency matrix
 		for (int i = 0; i < g->V; i++)
 		{
 			//Look through adjacent nodes
-			int cost = g->adjMatrix[u->GetVertex()][i];
+			int cost = g->adjMatrix[uVertex][i];
 			if (cost != INT_MAX)
 			{
 				//There is a link
 				Node* adjNode = g->nodes[i];
+				int adjVertex = adjNode->GetVertex();
+				int adjDist = adjNode->GetDistanceFromSource();
 #ifndef ADDALLNODES
 				//If the node has not been visited yet, and is not already in the queue, we add it.
 				if (S[adjNode->GetVertex()] == 0)
@@ -189,14 +196,14 @@ void Dijkstra::CalculateShortestPathArray(Graph* g, Node* source)
 #endif
 				//If this node is not in the shortest path set
 				//And the current distance to the node is more than the current cost to REACH current vertex + distance from this vertex to node
-				if (S[adjNode->GetVertex()] != 1 && adjNode->GetDistanceFromSource() > u->GetDistanceFromSource() + cost)
+				if (S[adjVertex] != 1 && adjDist > uDist + cost)
 				{
 					//Remove this node and update back
 					pq.Delete(adjNode);
 					//Update the distance of adjacent node to the shorter distance
-					adjNode->SetDistanceFromSource(u->GetDistanceFromSource() + cost);
+					adjNode->SetDistanceFromSource(uDist + cost);
 					//Update pre-decessor
-					pi[adjNode->GetVertex()] = u;
+					pi[adjVertex] = u;
 					//Insert the node back into the queue with updated weights
 					pq.Insert(adjNode);
 				}

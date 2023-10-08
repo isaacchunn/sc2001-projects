@@ -1,12 +1,12 @@
 #include "PriorityQueueArray.h"
 
 PriorityQueueArray::PriorityQueueArray()
-	: type(TYPE::MINIMISING)
+	: type(TYPE::MINIMISING), size(0)
 {
 }
 
 PriorityQueueArray::PriorityQueueArray(TYPE type)
-	: type(type)
+	: type(type) ,size(0)
 {
 }
 
@@ -18,12 +18,8 @@ bool PriorityQueueArray::Insert(Node* n)
 {
 	if (n == NULL)
 		return false;
-
-	//Prevent duplicates.
-	if (std::find(elements.begin(), elements.end(), n) != elements.end())
-		return false;
-	
 	elements.push_back(n);
+	size++;
 	return true;
 }
 
@@ -33,28 +29,25 @@ bool PriorityQueueArray::Insert(Node* n)
 /// <returns>smallest node, null if queue empty</returns>
 Node* PriorityQueueArray::GetSmallest()
 {
-	//if the queue is empty, return null
-	if (IsEmpty())
-		return NULL;
-
 	//Searches through the list and gets the smallest distance node
 	//Only takes the "first smallest even if there may be multiple processes of the same weight."
 	int min = INT_MAX;
 	int index = 0;
-	for (int i = 0; i < elements.size(); i++)
+	for (int i = 0; i < size; i++)
 	{
-		if (elements[i]->GetDistanceFromSource() < min)
+		int dist = elements[i]->GetDistanceFromSource();
+		if (dist < min)
 		{
 			//Set min to be this distance and update indices
-			min = elements[i]->GetDistanceFromSource();
+			min = dist;
 			index = i;
 		}
 	}
 	//Once we have index and min
 	Node* n = elements[index];
-	//Delete node at this point
-	elements.erase(elements.begin() + index);
-
+	elements[index] = elements[size - 1];
+	elements.pop_back();
+	size--;
 	return n;
 }
 
@@ -64,7 +57,7 @@ Node* PriorityQueueArray::GetSmallest()
 /// <returns>true if empty, false if not.</returns>
 bool PriorityQueueArray::IsEmpty()
 {
-	return elements.size() == 0;
+	return size == 0;
 }
 
 /// <summary>
@@ -87,19 +80,34 @@ bool PriorityQueueArray::Delete(Node* n)
 	if (n == NULL)
 		return false;
 
-	int i = 0;
-	for (; i < elements.size(); i++)
+	for (int i = 0; i < size; i++)
 	{
 		if (elements[i] == n)
+		{
+			//Update elements[i] to be last element, then pop back
+			elements[i] = elements[size-1];
+			elements.pop_back();
+			size--;
 			break;
+		}
 	}
-	if (i == elements.size())
-		return false;
-
-	//Else we found it delete it at this index and return true
-	elements.erase(elements.begin() + i);
 	return true;
+}
 
+bool PriorityQueueArray::Delete(int vertex)
+{
+	for (int i = 0; i < size; i++)
+	{
+		if (elements[i]->GetVertex() == vertex)
+		{
+			//Update elements[i] to be last element, then pop back
+			elements[i] = elements[size-1];
+			elements.pop_back();
+			size--;
+			break;
+		}
+	}
+	return true;
 }
 
 
