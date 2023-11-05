@@ -13,9 +13,9 @@ package Project3_DP.source;
 public class KnapsackMain {
 
     /**
-     * An unbounded knapsack algorithm that calcualtes the max profit given some weights and profit
+     * An unbounded knapsack algorithm that calculates the max profit given some weights and profit
      * with a known capacity.
-     * Unbounded - items can be repicked an infinite amount of times.
+     * Unbounded - items can be re picked an infinite amount of times.
      *
      * @param weights  An array of weights
      * @param profits  An array of profits
@@ -43,9 +43,13 @@ public class KnapsackMain {
                 }
             }
         }
+        for (int i = 0; i < dp.length; i++) {
+            System.out.println(i + ":" + dp[i]);
+        }
         //Our max value is the last value of the array
         return dp[capacity];
     }
+
 
     public static void main(String[] args) {
         int capacity = 14;
@@ -54,5 +58,11 @@ public class KnapsackMain {
 
         int max1 = unboundedKnapsack(w1, p1, capacity);
         System.out.println("The max value is " + max1);
+
+        int[] w2 = {5, 6, 8};
+        int[] p2 = {7, 6, 9};
+
+        int max2 = unboundedKnapsack(w2, p2, capacity);
+        System.out.println("The max value is " + max2);
     }
 }
