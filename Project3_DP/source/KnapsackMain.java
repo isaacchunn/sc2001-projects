@@ -25,9 +25,6 @@ public class KnapsackMain {
     public static int unboundedKnapsack(int[] weights, int[] profits, int capacity) {
         //Create a 1D array with length capacity + 1
         int[] dp = new int[capacity + 1];
-        //In this case, newly created int arrays in java are initialized to 0
-        //For other languages, initialization may be needed, that takes an order of O(n) time.
-
         //Loop through our dp array starting from index 1, as index 0 means 0 capacity, which is trivial.
         for (int i = 1; i < dp.length; i++) //O(n)
         {
@@ -43,26 +40,81 @@ public class KnapsackMain {
                 }
             }
         }
-        for (int i = 0; i < dp.length; i++) {
-            System.out.println(i + ":" + dp[i]);
-        }
         //Our max value is the last value of the array
         return dp[capacity];
     }
 
+    /**
+     * An unbounded knapsack algorithm that calculates the max profit given some weights and profit
+     * with a known capacity.
+     * Unbounded - items can be re picked an infinite amount of times.
+     *
+     * @param weights  An array of weights
+     * @param profits  An array of profits
+     * @param capacity The max capacity of our knapsack.
+     * @return The max profit of items that we can fit into our knapsack.
+     */
+    public static int unboundedKnapsack2(int[] weights, int[] profits, int capacity) {
+        //Create a 1D array with length capacity + 1
+        int[] dp = new int[capacity + 1];
+        //Declare a new array that holds the index of our objects
+        int[] idx = new int[capacity + 1];
+        //Initialization
+        for(int i = 0; i <= capacity; i++)
+        {
+            idx[i] = -1;
+        }
+        //Loop through our dp array starting from index 1, as index 0 means 0 capacity, which is trivial.
+        for (int i = 1; i < dp.length; i++) //O(n)
+        {
+            //At each index, loop through all weights
+            for (int j = 0; j < weights.length; j++) //O(n)
+            {
+                //If the current weight is less than or equals to capacity at index i
+                if (weights[j] <= i) {
+                    //If the current value is lower than if we include the object + profit
+                    if (dp[i] < dp[i - weights[j]] + profits[j]) {
+                        dp[i] = dp[i - weights[j]] + profits[j];
+                        //Update our idx of item chosen (index j)
+                        idx[i] = j;
+                    }
+                }
+            }
+        }
+        System.out.println("The included objects in the knapsack are (weight,profit):");
+        int c = capacity;
+        int w = 0;
+        //Now, we crawl back upwards to find out which object was included.
+        while (c > 0 && dp[c] != 0) {
+            //Get the item index at this capacity
+            int item = idx[c];
+            //Minus from our capacity and print out the object put.
+            c -= weights[item];
+            //Increment our total weight used
+            w += weights[item];
+            System.out.print("(" + weights[item] + "," + profits[item] + ")");
+        }
+        System.out.println("\nTotal weight used: " + w + "/" + capacity);
+        System.out.println("The max profit is: " + dp[capacity]);
+        //Our max value is the last value of the array
+
+        for(int i = 0; i < dp.length; i++)
+        {
+            System.out.println(i + " : " + dp[i] + " " + idx[i]);
+        }
+        return dp[capacity];
+    }
 
     public static void main(String[] args) {
         int capacity = 14;
         int[] w1 = {4, 6, 8};
         int[] p1 = {7, 6, 9};
 
-        int max1 = unboundedKnapsack(w1, p1, capacity);
-        System.out.println("The max value is " + max1);
+        int max1 = unboundedKnapsack2(w1, p1, capacity);
 
         int[] w2 = {5, 6, 8};
         int[] p2 = {7, 6, 9};
 
-        int max2 = unboundedKnapsack(w2, p2, capacity);
-        System.out.println("The max value is " + max2);
+        int max2 = unboundedKnapsack2(w2, p2, capacity);
     }
 }
